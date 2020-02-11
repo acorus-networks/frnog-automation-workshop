@@ -2,6 +2,7 @@
 
 ### This lab is based on Juniper Networks VQFX repo :
 https://github.com/Juniper/vqfx10k-vagrant
+
 https://github.com/jerearista/vagrant-veos
 
 # Requirement
@@ -49,11 +50,7 @@ This Vagrantfile will spawn 2 instances of VQFX (Full), 2 instances of VEOS rout
                                      =============                 
                                      | vqfx-pfe2 |                
                                      =============                
-                                                        
-            
-   
-                                     =============
-                                  
+                                                                                       
 
 # Provisioning
 
