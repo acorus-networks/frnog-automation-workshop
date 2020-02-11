@@ -79,7 +79,13 @@
              Port 22
              IdentityFile ~/.ssh/id_rsa          
 
-          Host vqfx3
+          Host veos1
+             User noc
+             PreferredAuthentications publickey
+             Port 22
+             IdentityFile ~/.ssh/id_rsa
+
+          Host veos2
              User noc
              PreferredAuthentications publickey
              Port 22
@@ -136,8 +142,8 @@
         block: |
           192.168.100.20  vqfx1
           192.168.100.21  vqfx2
-          192.168.100.22  vqfx3
-
+          192.168.100.22  veos1
+          192.168.100.23  veos2
 
 
 

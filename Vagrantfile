@@ -10,7 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     config.ssh.insert_key = false
 
-    (1..3).each do |id|
+    (1..2).each do |id|
         re_name  = ( "vqfx" + id.to_s ).to_sym
         pfe_name = ( "vqfx" + id.to_s + "-pfe" ).to_sym
 
@@ -73,8 +73,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     if !Vagrant::Util::Platform.windows?
         config.vm.provision "ansible" do |ansible|
             ansible.groups = {
-                "vqfx10k" => ["vqfx1", "vqfx2", "vqfx3"],
-                "vqfx10k-pfe" => ["vqfx1-pfe", "vqfx2-pfe", "vqfx3-pfe"],
+                "vqfx10k" => ["vqfx1", "vqfx2"],
+                "vqfx10k-pfe" => ["vqfx1-pfe", "vqfx2-pfe"],
                 "all:children" => ["vqfx10k", "vqfx10k-pfe"]
             }
             ansible.playbook = "provisioning/deploy-config.p.yaml"
