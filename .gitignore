@@ -1,0 +1,36 @@
+# Swap
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-v][a-z]
+[._]sw[a-p]
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Session
+Session.vim
+
+# Temporary
+.netrwhist
+*~
+# Auto-generated tag files
+tags
+
+## Ansible retry
+*.retry
+
+## MAC OS X
+.DS_Store
+
+# Idea ? Probably Pycharm
+*.idea
+
+# Credz
+ansible/extra_vars/global_vars_ansible.yaml
+ansible/extra_vars/global_vars_venv.yaml
+credentials.py
+local_credentials.py
+settings.py
+local_settings.py# Specify filepatterns you want git to ignore.

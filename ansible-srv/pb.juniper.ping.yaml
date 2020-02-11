@@ -1,0 +1,34 @@
+---
+- name: Ping devices
+  hosts: all
+  connection: network_cli
+  gather_facts: no
+
+  roles:
+    - Juniper.junos
+
+  vars:
+    ansible_network_os: junos
+    ansible_user: noc
+
+  tasks:
+
+    - name: check if neighbors are reacheable on intercos
+      ignore_errors: yes
+      junos_ping:
+         dest_ip: "{{ item.vlans[0].ipv4.peer_ip }}"
+         source_ip: "{{ item.vlans[0].ipv4.local_ip }}"
+         ttl: 1
+      with_items:
+         - "{{ igp.neighbors }}"
+
+
+    - name: check if neighbors loopbacks are reacheable
+      ignore_errors: yes
+      junos_ping:
+         dest_ip: "{{ item }}"
+         source_ip: "{{ igp.loopbacks[0].ipv4.local_ip }}"
+      with_items:
+         - 10.200.0.1
+         - 10.200.0.2
+         - 10.200.0.3
