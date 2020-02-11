@@ -1,0 +1,19 @@
+- name: Build and deploy configuration
+  hosts: arista
+  connection: local
+  gather_facts: no
+  vars:
+    arista_credentials:
+      host: "{{ inventory_hostname }}"
+      transport: eapi
+      authorize: yes
+      auth_pass: !vault...  
+
+  tasks:
+    - name: Build configuration
+      template: src=arista.conf.j2 dest=/tmp/{{ inventory_hostname }}.conf
+
+    - name: Configure interface description
+      eos_config:
+        provider: "{{ arista_credentials }}"
+        src: /tmp/{{ inventory_hostname }}.conf

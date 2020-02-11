@@ -77,8 +77,8 @@ $ ssh acorus@{{your_pod_ip}}
 #### Check vagrant env (shoud be ready to use) :
 
 ```
-acorus@demo01:~$ cd juniper-automation-labs
-acorus@demo01:~/juniper-automation-labs$ vagrant status
+acorus@demo01:~$ cd frnog-automation-workshop
+acorus@demo01:~/frnog-automation-workshop$ vagrant status
 ```
 
 #### SSH to devices on lab :
@@ -87,8 +87,8 @@ Open 4 more terminals, connnect to your POD demo server in each. You should have
 Then SSH to each device in the lab, repeat for vqfx1, vqfx2, veos1, veos2, srv.
 
 ```
-acorus@demo01:~$ cd juniper-automation-labs
-acorus@demo01:~/juniper-automation-labs$ vagrant ssh vqfx1
+acorus@demo01:~$ cd frnog-automation-workshop
+acorus@demo01:~/frnog-automation-workshop$ vagrant ssh vqfx1
 ```
 
 #### Test on VQFX1 :
@@ -808,7 +808,7 @@ Check the pro tips below in case you break something on the lab.
 If you want to reset the to the orginal state, run :
 
 ```
-acorus@demo1:~/juniper-automation-labs$ vagrant provision
+acorus@demo1:~/frnog-automation-workshop$ vagrant provision
 ```
 
 Rollback configuration to a previous state on vqfx, first select commit to rollback :
