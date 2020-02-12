@@ -20,7 +20,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         config.vm.define pfe_name do |vqfxpfe|
             vqfxpfe.ssh.insert_key = false
             vqfxpfe.vm.box = 'juniper/vqfx10k-pfe'
-            vqfxpfe.vm.boot_timeout = 240
+            vqfxpfe.vm.boot_timeout = 1200
 
             # DO NOT REMOVE / NO VMtools installed
             vqfxpfe.vm.synced_folder '.', '/vagrant', disabled: true
@@ -38,7 +38,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         config.vm.define re_name do |vqfx|
             vqfx.vm.hostname = "vqfx#{id}"
             vqfx.vm.box = 'juniper/vqfx10k-re'
-            vqfx.vm.boot_timeout = 240
+            vqfx.vm.boot_timeout = 1200
 
             # DO NOT REMOVE / NO VMtools installed
             vqfx.vm.synced_folder '.', '/vagrant', disabled: true
@@ -63,7 +63,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         config.vm.define re_name do |veos|
             veos.vm.hostname = "veos#{id}"
             veos.vm.box = 'keepworld/veos-lab-4.19'
-            veos.vm.boot_timeout = 120
+            veos.vm.boot_timeout = 240
 
             # DO NOT REMOVE / NO VMtools installed
             #veos.vm.synced_folder '.', '/vagrant', disabled: true
