@@ -1,8 +1,8 @@
 
 interfaces:
-    - name: xe-0/0/1
-      ip: 192.168.3.2
-    - name: xe-0/0/2
-      ip: 192.168.4.2
-    - name: xe-0/0/4
+    - name: ethernet2
+      ip: 192.168.2.2
+    - name: ethernet3
+      ip: 192.168.5.1
+    - name: ethernet4
       ip: 192.168.100.22

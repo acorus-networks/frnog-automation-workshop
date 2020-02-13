@@ -3,7 +3,9 @@
   connection: local
   gather_facts: no
   roles:
-    - Juniper.junos
+    # - Juniper.junos
+    # Debug ...
+    - "../network/ansible/roles/tools/Juniper.junos"
   tasks:
     - name: Build configuration
       template: src=vqfx.conf.j2 dest=/tmp/{{ inventory_hostname }}.conf
