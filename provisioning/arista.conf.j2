@@ -1,0 +1,16 @@
+hostname {{ inventory_hostname }}
+!
+username admin privilege 15 role network-admin secret admin
+!
+ip routing
+!
+management api http-commands
+   no shutdown
+!
+{% for interface in interfaces %}
+interface {{ interface.name }}
+   no switchport
+   ip address {{ interface.ip }}/24
+!
+{% endfor %}
+end
