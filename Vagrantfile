@@ -217,15 +217,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ## VEOS provisioning       ###
     ## exclude Windows host    ###
     ##############################
-    if !Vagrant::Util::Platform.windows?
-        config.vm.provision "ansible" do |ansible|
-            ansible.groups = {
-                "arista" => ["veos3", "veos4"],
-                "all:children" => ["arista"]
-            }
-            ansible.playbook = "provisioning/deploy-config-arista.yaml"
-    end
-    end
+    # if !Vagrant::Util::Platform.windows?
+    #     config.vm.provision "ansible" do |ansible|
+    #         ansible.groups = {
+    #             "arista" => ["veos3", "veos4"],
+    #             "all:children" => ["arista"]
+    #         }
+    #         ansible.playbook = "provisioning/deploy-config-arista.yaml"
+    # end
+    # end
 
 
     ##############################

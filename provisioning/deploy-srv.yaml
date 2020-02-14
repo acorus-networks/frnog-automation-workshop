@@ -79,13 +79,13 @@
              Port 22
              IdentityFile ~/.ssh/id_rsa          
 
-          Host veos1
+          Host veos3
              User noc
              PreferredAuthentications publickey
              Port 22
              IdentityFile ~/.ssh/id_rsa
 
-          Host veos2
+          Host veos4
              User noc
              PreferredAuthentications publickey
              Port 22

@@ -7,7 +7,7 @@
       host: "{{ inventory_hostname }}"
       transport: cli
       username: admin
-      #authorize: yes
+      authorize: yes
       password: admin
 
   tasks:
