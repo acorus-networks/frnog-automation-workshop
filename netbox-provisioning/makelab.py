@@ -5,8 +5,9 @@ import json
 import argparse
 
 class LAB_SPEC:
+    TENANT = "tier1-operator"
     RTR_NAMING = "tier1-rtr{rtr_id}"
-    LOOPBACK = "192.168.1.{rtr_id}/32"
+    LOOPBACK = "10.0.1.{rtr_id}/32"
     DEVICE_TYPES = [
         {
             "model": "MX10k",
@@ -27,6 +28,7 @@ class LAB_SPEC:
     }
 
 class POD_SPECS:
+    TENANT = "pod{pod_id:02d}"
     DEVICE_TYPES = [
         {
             "model": "EX3400",
@@ -130,10 +132,21 @@ def setup_device_role(api_connector, spec, color):
         )
     return device_role
 
-def setup_site(api_connector, slug):
+
+def setup_tenant(api_connector, tenant_name):
+    tenant = api_connector.tenancy.tenants.get(name=tenant_name)
+    if tenant is None:
+        tenant = api_connector.tenancy.tenants.create(
+            name=tenant_name,
+            slug=tenant_name
+        )
+    return tenant
+
+def setup_site(api_connector, slug, tenant):
     return api_connector.dcim.sites.create(
         name=slug,
         slug=slug,
+        tenant=tenant.id,
     )
 
 def setup_rack(api_connector, pod_id, site):
@@ -167,11 +180,12 @@ def setup_device_type(api_connector, spec, dt_id):
 
     return device_type
 
-def setup_device(api_connector, name, device_role, device_type, site):
+def setup_device(api_connector, name, device_role, device_type, tenant, site):
     return api_connector.dcim.devices.create(
         name=name,
         device_role=device_role.id,
         device_type=device_type.id,
+        tenant=tenant.id,
         site=site.id
     )
 
@@ -230,11 +244,11 @@ def make_pod(pod_id, api_connector):
         "devices": {},
         "interfaces": {}
     }
-
+    tenant = setup_tenant(api_connector, tenant_name=SPEC.TENANT.format(pod_id=pod_id))
     device_role = setup_device_role(api_connector, spec=SPEC, color="f44336")
 
     # make_site
-    site = setup_site(api_connector, slug=SPEC.SITE.format(pod_id=pod_id))
+    site = setup_site(api_connector, slug=SPEC.SITE.format(pod_id=pod_id), tenant=tenant)
 
     for rtr in model["rtrs"]:
         assert rtr['id'] not in pod_refs["devices"]
@@ -246,6 +260,7 @@ def make_pod(pod_id, api_connector):
             name=SPEC.RTR_NAMING.format(pod_id=pod_id, rtr_id=rtr['id']),
             device_role=device_role,
             device_type=device_type,
+            tenant=tenant,
             site=site
         )
         setup_loopback(
@@ -278,10 +293,11 @@ def make_tier1(api_connector, pod_count, refs):
         "interfaces": {}
     }
 
+    tenant = setup_tenant(api_connector, tenant_name=SPEC.TENANT)
     device_role = setup_device_role(api_connector, spec=SPEC, color="43f436")
 
     # make_site
-    site = setup_site(api_connector, slug=SPEC.TIER1_SITE)
+    site = setup_site(api_connector, slug=SPEC.TIER1_SITE, tenant=tenant)
 
     for rtr in model["devices"]:
         assert rtr['id'] not in pod_refs["devices"]
@@ -293,6 +309,7 @@ def make_tier1(api_connector, pod_count, refs):
             name=SPEC.RTR_NAMING.format(rtr_id=rtr["id"]),
             device_role=device_role,
             device_type=device_type,
+            tenant=tenant,
             site=site
         )
         setup_loopback(
