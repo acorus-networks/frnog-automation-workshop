@@ -1,0 +1,8 @@
+
+interfaces:
+    - name: ethernet2
+      ip: 192.168.2.2
+    - name: ethernet3
+      ip: 192.168.5.1
+    - name: ethernet4
+      ip: 192.168.100.22

@@ -3,11 +3,12 @@
   connection: local
   gather_facts: no
   vars:
-    arista_credentials:
+    eapi:
       host: "{{ inventory_hostname }}"
-      transport: eapi
+      transport: cli
+      username: admin
       authorize: yes
-      auth_pass: !vault...  
+      password: admin
 
   tasks:
     - name: Build configuration
@@ -15,5 +16,5 @@
 
     - name: Configure interface description
       eos_config:
-        provider: "{{ arista_credentials }}"
+        provider: "{{ eapi }}"
         src: /tmp/{{ inventory_hostname }}.conf
