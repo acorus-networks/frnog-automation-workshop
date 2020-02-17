@@ -1,55 +1,56 @@
 # FRNOG Automation Workshop 2020
 
-### This lab is based on Juniper Networks VQFX repo :
-https://github.com/Juniper/vqfx10k-vagrant
-
-https://github.com/jerearista/vagrant-veos
-
 # Requirement
 
 This Vagrantfile will spawn 2 instances of VQFX (Full), 2 instances of VEOS routers and 1 ubuntu server.
 
+vqfx1 will be connected to our lab Tier 1 ISP, RS will be reacheable through the transit session.
+
 ### Resources
- - RAM : 12G
- - CPU : 6 Cores
+ - RAM : 16G
+ - CPU : 8 Cores
 
 # Topology
 
-                                                           =============
-                                                           |   demo0X  |
-                                                           =============  
-                                                                 | 
-                                                                 |          =============
-                                                                 |          |    srv    |
-                                                                 |          =============
-                                                                 |                |em0
-                                            --------------------------------------------                     
-                                            |                                          |
-                                         em0|                                          | mgmt
-                                     =============  xe-0/0/4             xxx     =============
-                                     |           | ----------------------------- |           |
-                                     |   vqfx1   |                               |   veos1   |
+                =============                              =============
+                |           |                              |   demo0X  |
+                |   Tier 1  |                              =============  
+                |           |                                     
+                =============                                               =============
+                      |                                                     |    srv    |
+                      |                                                     =============
+                      |                                     INBAND MGMT           |eth0
+                      |                     |------------------------------------------|                    
+                      |                     |                                          |
+                      |            xe-0/0/4 |                                          | Ethernet3
+                      |              =============  xe-0/0/0           Ethernet1 =============
+                      |------------- |           | ----------------------------- |           |
+                xe-0/0/2             |   vqfx1   |                               |   veos3   |
                             |------- |           |                               |           | -------|
                             |        =============                               =============        |
                             |            em1|                                                         |
                             |        =============                                                    |
                             |        | vqfx-pfe1 |                                                    |
                             |        =============                                                    |
-                          xe-0/0/0                                                                   x/x/x
                             |                                                                         |
-                            |                                                                         |
-                            |                                                                         | 
+                        xe-0/0/1                                                                   Ethernet2  
                             |                                                                         |
                             |                                                                         | 
-                            |        =============  xe-0/0/4             xxx     =============        |
+                            |                                                                         |
+                            |                                                                         | 
+                            |        =============  xe-0/0/0           Ethernet1 =============        |
                             |        |           | ----------------------------- |           | -------|
-                            |------- |   vqfx2   |                               |   veos2   |
-                                     |           |                               |           |
-                                     =============                               =============
-                                         em1|                     
-                                     =============                 
-                                     | vqfx-pfe2 |                
-                                     =============                
+                            |------- |   vqfx2   |                               |   veos4   |
+                                     |           | ----|                   |---- |           |
+                                     =============     |                   |     =============
+                                         em1|          | xe-0/0/4          | Ethernet3 
+                                     =============     |                   |
+                                     | vqfx-pfe2 |     |                   | 
+                                     =============     |                   |
+                                                       |                   |
+                                                       |                   |
+                                                       |-------------------|
+                                                            INBAND MGMT        
                                                                                        
 
 # Provisioning
