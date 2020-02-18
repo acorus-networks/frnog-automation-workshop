@@ -7,11 +7,20 @@
 - file: path=~/configs/{{ ansible_host }}/users.conf.part state=absent
 - file: path=~/configs/{{ ansible_host }}/{{ ansible_host }}.conf state=absent
 
-- name: Base Configuration
+- name: Base Configuration - Juniper
   template:
     src={{ item }}.j2
     dest=~/configs/{{ ansible_host }}/{{ item }}.part
   tags:
     - base
   with_items:
-    - users.conf
+    - users-juniper.conf
+
+- name: Base Configuration - Arista
+  template:
+    src={{ item }}.j2
+    dest=~/configs/{{ ansible_host }}/{{ item }}.part
+  tags:
+    - base
+  with_items:
+    - users-arista.conf

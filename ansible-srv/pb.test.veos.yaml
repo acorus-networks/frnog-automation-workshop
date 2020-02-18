@@ -1,20 +1,18 @@
 ---
 
-- name: Run commands on remote LAB devices
-  hosts: lab
+- name: Run commands on remote Arista devices
+  hosts: arista
   connection: network_cli
-  gather_facts: false
-  # pre_tasks:
-  #   - include_vars: "authentication.yaml"
+  gather_facts: no
 
   tasks:
-    - name: Collect all facts from device
-      eos_facts:
-      provider: "{{arista_credentials}}"
-      gather_subset:
-        - all
-     register: facts
+   - name: run show version on remote devices
+     eos_command:
+       commands:
+         - command: show version
+           output: json
+     register: version
 
-    - name: Display result
-      debug:
-       msg: "Model is {{facts.ansible_facts.ansible_net_model}} and it is running {{facts.ansible_facts.ansible_net_version}}"
+   - name: Display result
+     debug:
+       msg: "Version is : {{version.stdout[0].version}}"
