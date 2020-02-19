@@ -13,9 +13,9 @@ igp:
     vlans:
     - id: 0
       ipv4:
-        local_ip: 192.168.2.2
-        netmask: 24
-        peer_ip: 192.168.2.1
+        local_ip: 10.0.0.1
+        netmask: 31
+        peer_ip: 10.0.0.0
   - interface: Ethernet2
     peer: veos4
     speed: 10G
@@ -23,6 +23,6 @@ igp:
     vlans:
     - id: 0
       ipv4:
-        local_ip: 192.168.5.1
-        netmask: 24
-        peer_ip: 192.168.5.2
+        local_ip: 10.0.0.6
+        netmask: 31
+        peer_ip: 10.0.0.7

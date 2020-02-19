@@ -1,0 +1,5 @@
+---
+
+- import_playbook: ./vendor-playbooks/pb.juniper.transit.yaml
+
+- import_playbook: ./vendor-playbooks/pb.arista.transit.yaml

@@ -13,16 +13,16 @@ igp:
     vlans:
     - id: 0
       ipv4:
-        local_ip: 192.168.4.1
-        netmask: 24
-        peer_ip: 192.168.4.2
+        local_ip: 10.0.0.4
+        netmask: 31
+        peer_ip: 10.0.0.5
   - interface: xe-0/0/1
-    peer: vqfx3
+    peer: vqfx1
     speed: 10G
     type: local-core
     vlans:
     - id: 0
       ipv4:
-        local_ip: 192.168.3.2
-        netmask: 24
-        peer_ip: 192.168.3.1
+        local_ip: 10.0.0.3
+        netmask: 31
+        peer_ip: 10.0.0.2

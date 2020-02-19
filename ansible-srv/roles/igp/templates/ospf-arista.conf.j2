@@ -1,0 +1,40 @@
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+
+{% if igp is defined %}
+{% if igp.loopbacks is defined %}
+{% for loopback in igp.loopbacks %}
+
+{% if loopback.ipv4 is defined %}
+
+
+
+{# Endif loopback.ipv4 is defined #}
+{% endif %}
+
+{# Endfor loopback in igp.loopbacks #}
+{% endfor %}
+{# Endif igp.loopbacks is defined #}
+{% endif %}
+
+
+{% if igp.neighbors is defined %}
+{% for neighbor in igp.neighbors %}
+{% if neighbor.vlans is defined %}
+{% for vlan in neighbor.vlans %}
+
+
+
+{# Endfor vlan in neighbors.vlans #}
+{% endfor %}
+{# Endif neighbors.vlans is defined #}
+{% endif %}
+
+{# Endfor loopback in igp.loopbacks #}
+{% endfor %}
+{# Endif igp.loopbacks is defined #}
+{% endif %}
+
+
+{# Endif igp is defined #}
+{% endif %}
+

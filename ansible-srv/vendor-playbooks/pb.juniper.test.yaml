@@ -1,15 +1,11 @@
 ---
 - name: Compare  Junos OS
-  hosts: all
+  hosts: juniper
   connection: network_cli
   gather_facts: no
 
   roles:
     - Juniper.junos
-
-  vars:
-    ansible_network_os: junos
-    ansible_user: noc
 
   tasks:
 

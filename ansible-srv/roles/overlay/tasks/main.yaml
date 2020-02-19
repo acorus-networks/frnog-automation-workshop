@@ -1,0 +1,27 @@
+---
+# tasks file for roles/overlay
+
+- name: Create host specific configuration directory
+  file: path=~/configs/{{ ansible_host }} state=directory
+
+- file: path=~/configs/{{ ansible_host }}/bgp.conf.part state=absent
+- file: path=~/configs/{{ ansible_host }}/{{ ansible_host }}.conf state=absent
+
+- name: BGP Configuration - Juniper
+  template:
+    src={{ item }}.j2
+    dest=~/configs/{{ ansible_host }}/{{ item }}.part
+  tags:
+    - bgp
+  with_items:
+    - bgp-juniper.conf
+
+
+- name: BGP Configuration - Arista
+  template:
+    src={{ item }}.j2
+    dest=~/configs/{{ ansible_host }}/{{ item }}.part
+  tags:
+    - bgp
+  with_items:
+    - bgp-arista.conf

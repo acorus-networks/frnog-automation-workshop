@@ -1,0 +1,28 @@
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+
+{% if igp is defined %}
+{% if igp.loopbacks is defined %}
+{% for loopback in igp.loopbacks %}
+
+
+{# Endfor loopback in igp.loopbacks #}
+{% endfor %}
+
+{# Endif igp.loopbacks is defined #}
+{% endif %}
+
+
+{% if igp.neighbors is defined %}
+{% for neighbor in igp.neighbors %}
+
+
+
+{# Endfor neighbor in igp.neighbors #}
+{% endfor %}
+
+{# Endif igp.neighbors is defined #}
+{% endif %}
+
+{# Endif igp is defined #}
+{% endif %}
+

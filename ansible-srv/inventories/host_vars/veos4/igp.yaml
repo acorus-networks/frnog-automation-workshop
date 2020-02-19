@@ -1,7 +1,7 @@
 igp:
   loopbacks:
   - ipv4:
-      local_ip: 10.200.0.3
+      local_ip: 10.200.0.4
       netmask: 32
     name: lo0
     vlan: 0
@@ -13,9 +13,9 @@ igp:
     vlans:
     - id: 0
       ipv4:
-        local_ip: 192.168.4.2
-        netmask: 24
-        peer_ip: 192.168.4.1
+        local_ip: 10.0.0.5
+        netmask: 31
+        peer_ip: 10.0.0.4
   - interface: Ethernet2
     peer: veos3
     speed: 10G
@@ -23,6 +23,6 @@ igp:
     vlans:
     - id: 0
       ipv4:
-        local_ip: 192.168.5.2
-        netmask: 24
-        peer_ip: 192.168.5.1
+        local_ip: 10.0.0.7
+        netmask: 31
+        peer_ip: 10.0.0.6

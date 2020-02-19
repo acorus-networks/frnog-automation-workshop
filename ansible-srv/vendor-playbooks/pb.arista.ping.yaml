@@ -1,0 +1,35 @@
+---
+- name: Ping devices
+  hosts: arista
+  connection: network_cli
+  gather_facts: no
+
+  tasks:
+   - name: check if neighbors are reacheable on intercos
+     eos_command:
+       commands:
+         - command: "ping {{ item.vlans[0].ipv4.peer_ip }}"
+           output: json
+     with_items:
+         - "{{ igp.neighbors }}"           
+     register: ping
+
+   - name: Display result
+     debug:
+       msg: "{{ ping.stdout[0] }}"
+
+   - name: check if neighbors loopbacks are reacheable
+     eos_command:
+       commands:
+         - command: "ping {{ item }}"
+           output: json
+      with_items:
+         - 10.200.0.1
+         - 10.200.0.2
+         - 10.200.0.3
+         - 10.200.0.4          
+     register: ping2
+
+   - name: Display result
+     debug:
+       msg: "{{ ping2.stdout[0] }}"
