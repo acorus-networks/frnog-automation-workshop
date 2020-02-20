@@ -4,9 +4,17 @@
 
 {% for user in common_users %}
 
-username {{ user.name }} privilege {% if class == "super-user" %}15{% else %}1{% endif %} {% if user.password is defined %}secret sha512 {{ user.password }} {% else %}nopassword{% endif %}
+username {{ user.name }} privilege {% if user.class == "super-user" %}15{% else %}0{% endif %} {% if user.password is defined %}secret sha512 {{ user.password }} {% else %}nopassword{% endif %}
 
-username {{ user.name }} {{ ssh_pub.type }} {{ ssh_pub.key }}
+{% if user.ssh_pub is defined %}
+
+{% for ssh_pub in user.ssh_pub %}
+
+username {{ user.name }} sshkey {{ ssh_pub.key }}
+
+{% endfor %}
+
+{% endif %}
 
 {# for user in common_users #}
 {% endfor %}
