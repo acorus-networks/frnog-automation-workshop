@@ -6,6 +6,21 @@
 
 {% if loopback.ipv4 is defined %}
 
+!
+router ospf {% if loopback.vlan == 0 %}100{% else %}{{ loopback.vlan }}{% endif %}
+   router-id {{ loopback.ipv4.local_ip }}
+
+   {% if igp.neighbors is defined %}
+   {% for neighbor in igp.neighbors %}
+   {% if neighbor.vlans is defined %}
+   {% for vlan in neighbor.vlans %}
+
+
+
+   network {{ vlan.ipv4.local_ip }}/{{ vlan.ipv4.local_netmask }} area 0.0.0.0
+   {% endfor %}
+exit
+!
 
 
 {# Endif loopback.ipv4 is defined #}
