@@ -4,6 +4,11 @@
 {% if igp.loopbacks is defined %}
 {% for loopback in igp.loopbacks %}
 
+!
+interface Loopback{{ loopback.vlan }}
+   ip address {{ loopback.ipv4.local_ip }}/{{ loopback.ipv4.netmask }}
+exit
+!
 
 {# Endfor loopback in igp.loopbacks #}
 {% endfor %}
@@ -15,7 +20,33 @@
 {% if igp.neighbors is defined %}
 {% for neighbor in igp.neighbors %}
 
+    {% set peer = neighbor.peer %}
 
+    {% if neighbor.vlans is defined %}
+    {% for vlan in neighbor.vlans %}
+
+    {% if vlan.id != 0 and loop.index == 1 %}
+!
+interface {{ neighbor.interface }}.{{ vlan.id }}
+   description "Core: {{ peer }}"
+   ip address {{ vlan.ipv4.local_ip }}/{{ vlan.ipv4.netmask }}
+exit
+!
+	{% else %}
+!
+interface {{ neighbor.interface }}
+   no switchport
+   description "Core: {{ peer }}"
+   ip address {{ vlan.ipv4.local_ip }}/{{ vlan.ipv4.netmask }}
+exit
+!
+    {% endif %}
+
+    {# Endfor vlan in neighbor.vlans #}
+    {% endfor %}
+
+    {# Endif neighbor.vlans is defined #}
+    {% endif %}
 
 {# Endfor neighbor in igp.neighbors #}
 {% endfor %}
