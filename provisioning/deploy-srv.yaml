@@ -148,6 +148,8 @@
           192.168.100.22  veos3
           192.168.100.23  veos4
 
+    - name: create symb link for roles
+      command: cd ~/vendor-playbooks && ln -s ~/roles/ roles
 
 
 
