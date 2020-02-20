@@ -13,6 +13,7 @@
     dest=~/configs/{{ ansible_host }}/{{ item }}.part
   tags:
     - bgp
+  when: "'juniper' in group_names"  
   with_items:
     - bgp-juniper.conf
 
@@ -23,5 +24,6 @@
     dest=~/configs/{{ ansible_host }}/{{ item }}.part
   tags:
     - bgp
+  when: "'arista' in group_names"  
   with_items:
     - bgp-arista.conf

@@ -13,6 +13,7 @@
     dest=~/configs/{{ ansible_host }}/{{ item }}.part
   tags:
     - transit
+  when: "'juniper' in group_names"  
   with_items:
     - transit-juniper.conf
 
@@ -23,5 +24,6 @@
     dest=~/configs/{{ ansible_host }}/{{ item }}.part
   tags:
     - transit
+  when: "'arista' in group_names"
   with_items:
     - transit-arista.conf
