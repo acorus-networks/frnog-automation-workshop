@@ -149,7 +149,5 @@
           192.168.100.23  veos4
 
     - name: create symb link for roles
-      command: "cd /home/vagrant/vendor-playbooks && ln -s /home/vagrant/roles/ roles"
-
-
+      command: "ln -s /home/vagrant/roles/ /home/vagrant/vendor-playbooks/roles"
 
