@@ -13,7 +13,7 @@ loopback:
     ip: 10.33.9.30
     netmask: 24
   ipv6:
-    ip: "fddd::33:930"
+    ip: "fddd:1::33:930"
     netmask: 64
 bgp:
   id: 10.33.9.30

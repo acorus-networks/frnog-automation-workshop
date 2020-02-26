@@ -10,13 +10,13 @@ interfaces:
       netmask: 127 
 loopback:
   ipv4: 
-    ip: 10.135.2.80
+    ip: 10.35.2.81
     netmask: 24
   ipv6:
-    ip: "fddd::135:280"
+    ip: "fddd::35:281"
     netmask: 64
 bgp:
-  id: 10.135.2.80
+  id: 10.35.2.81
   asn: 35280
   sessions:
     ipv4:

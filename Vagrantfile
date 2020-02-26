@@ -115,10 +115,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         veos.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg4"
         # Interco Public arista1 - eth3
         #veos.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
-        vqfx.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg23"
+        veos.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg23"
         # Interco Public arista2 - eth4
         #veos.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
-        vqfx.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg24"
+        veos.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg24"
         # Inband management port - eth5 - seg 5
         veos.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg5"
 
