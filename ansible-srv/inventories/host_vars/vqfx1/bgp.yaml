@@ -1,9 +1,7 @@
 ---
+# IBGP routers
 
 peers:
- - lo: 10.200.0.2
-   name: ibgp-vqfx2
- - lo: 10.200.0.3
-   name: ibgp-veos3
- - lo: 10.200.0.4
-   name: ibgp-veos4
+ - vqfx2
+ - veos3
+ - veos4

@@ -1,2 +1,16 @@
 ---
 
+transit:
+  neighbors:
+  - interface: xe-0/0/2
+    peer: mx1-acorus
+    ipv4:
+      local_ip: 10.10.99.1
+      netmask: 31
+      peer_ip: 10.10.99.0
+  - interface: xe-0/0/3
+    peer: mx2-acorus
+    ipv4:
+      local_ip: 10.10.99.3
+      netmask: 31
+      peer_ip: 10.10.99.2
