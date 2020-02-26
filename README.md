@@ -1,55 +1,56 @@
 # FRNOG Automation Workshop 2020
 
-### This lab is based on Juniper Networks VQFX repo :
-https://github.com/Juniper/vqfx10k-vagrant
-
-https://github.com/jerearista/vagrant-veos
-
 # Requirement
 
 This Vagrantfile will spawn 2 instances of VQFX (Full), 2 instances of VEOS routers and 1 ubuntu server.
 
+vqfx1 will be connected to our lab Tier 1 ISP, RS will be reacheable through the transit session.
+
 ### Resources
- - RAM : 12G
- - CPU : 6 Cores
+ - RAM : 16G
+ - CPU : 8 Cores
 
 # Topology
 
-                                                           =============
-                                                           |   demo0X  |
-                                                           =============  
-                                                                 | 
-                                                                 |          =============
-                                                                 |          |    srv    |
-                                                                 |          =============
-                                                                 |                |em0
-                                            --------------------------------------------                     
-                                            |                                          |
-                                         em0|                                          | mgmt
-                                     =============  xe-0/0/4             xxx     =============
-                                     |           | ----------------------------- |           |
-                                     |   vqfx1   |                               |   veos1   |
+                =============                              =============
+                |           |                              |   demo0X  |
+                |   Tier 1  |                              =============  
+                |           |                                     
+                =============                                               =============
+                      |                                                     |    srv    |
+                      |                                                     =============
+                      |                                     INBAND MGMT           |eth0
+                      |                     |------------------------------------------|                    
+                      |                     |                                          |
+                      |            xe-0/0/4 |                                          | Ethernet3
+                      |              =============  xe-0/0/0           Ethernet1 =============
+                      |------------- |           | ----------------------------- |           |
+                xe-0/0/2             |   vqfx1   |                               |   veos3   |
                             |------- |           |                               |           | -------|
                             |        =============                               =============        |
                             |            em1|                                                         |
                             |        =============                                                    |
                             |        | vqfx-pfe1 |                                                    |
                             |        =============                                                    |
-                          xe-0/0/0                                                                   x/x/x
                             |                                                                         |
-                            |                                                                         |
-                            |                                                                         | 
+                        xe-0/0/1                                                                   Ethernet2  
                             |                                                                         |
                             |                                                                         | 
-                            |        =============  xe-0/0/4             xxx     =============        |
+                            |                                                                         |
+                            |                                                                         | 
+                            |        =============  xe-0/0/0           Ethernet1 =============        |
                             |        |           | ----------------------------- |           | -------|
-                            |------- |   vqfx2   |                               |   veos2   |
-                                     |           |                               |           |
-                                     =============                               =============
-                                         em1|                     
-                                     =============                 
-                                     | vqfx-pfe2 |                
-                                     =============                
+                            |------- |   vqfx2   |                               |   veos4   |
+                                     |           | ----|                   |---- |           |
+                                     =============     |                   |     =============
+                                         em1|          | xe-0/0/4          | Ethernet3 
+                                     =============     |                   |
+                                     | vqfx-pfe2 |     |                   | 
+                                     =============     |                   |
+                                                       |                   |
+                                                       |                   |
+                                                       |-------------------|
+                                                            INBAND MGMT        
                                                                                        
 
 # Provisioning
@@ -103,8 +104,7 @@ OUTPUT
 
 ```
 vagrant@vqfx1> show configuration
-## Last commit: 2019-01-24 12:34:12 UTC by root
-version 17.4R1.16;
+version 20191212.201431_builder.r1074901;
 system {
     host-name vqfx1;
     root-authentication {
@@ -127,65 +127,89 @@ OUTPUT
  
 ```
 vagrant@server:~$ ssh vqfx1
---- JUNOS 17.4R1.16 built 2017-12-19 20:03:37 UTC
+Last login: Tue Feb 18 16:31:54 2020 from 192.168.100.10
+--- JUNOS 19.4R1.10 built 2019-12-19 03:54:05 UTC
 {master:0}
 noc@vqfx1>
 ```
 
 
-Let's try with Ansible now :
+Let's try with Ansible now, well test Netconf connectivity towards Juniper routers :
 
 ```
-vagrant@server$ ansible-playbook -i inventories/hosts pb.test.netconf.yaml --vault-id ~/.vault_pass.txt
+vagrant@server:~$ ansible-playbook -i inventories/hosts pb.test.netconf.yaml --limit juniper --vault-id ~/.vault_pass.txt
 ```
 
 OUTPUT
 
 ```
-vagrant@server:~$ ansible-playbook -i inventories/hosts pb.test.netconf.yaml --vault-id ~/.vault_pass.txt
+vagrant@server:~$ ansible-playbook -i inventories/hosts pb.test.netconf.yaml --limit juniper --vault-id ~/.vault_pass.txt
 
-PLAY [Compare  Junos OS] *****************************************************************************************************************************
+PLAY [Compare  Junos OS] ***************************************************************************************************************************************************************************************************
 
-TASK [Checking NETCONF connectivity] *****************************************************************************************************************
-ok: [vqfx2]
-ok: [vqfx3]
+TASK [Checking NETCONF connectivity] ***************************************************************************************************************************************************************************************
 ok: [vqfx1]
+ok: [vqfx2]
 
-TASK [Print IP of remote device] *********************************************************************************************************************
+TASK [Print IP of remote device] *******************************************************************************************************************************************************************************************
 ok: [vqfx1] => {
     "msg": "192.168.100.20"
 }
 ok: [vqfx2] => {
     "msg": "192.168.100.21"
 }
-ok: [vqfx3] => {
-    "msg": "192.168.100.22"
-}
 
-TASK [Retrieving information from devices running Junos OS] ******************************************************************************************
+TASK [Retrieving information from devices running Junos OS] ****************************************************************************************************************************************************************
 ok: [vqfx2]
-ok: [vqfx3]
 ok: [vqfx1]
 
-TASK [Print version] *********************************************************************************************************************************
+TASK [Print version] *******************************************************************************************************************************************************************************************************
 ok: [vqfx1] => {
-    "junos.version": "17.4R1.16"
+    "junos.version": "19.4R1.10"
 }
 ok: [vqfx2] => {
-    "junos.version": "17.4R1.16"
-}
-ok: [vqfx3] => {
-    "junos.version": "17.4R1.16"
+    "junos.version": "19.4R1.10"
 }
 
-PLAY RECAP *******************************************************************************************************************************************
-vqfx1                      : ok=4    changed=0    unreachable=0    failed=0
-vqfx2                      : ok=4    changed=0    unreachable=0    failed=0
-vqfx3                      : ok=4    changed=0    unreachable=0    failed=0
+PLAY RECAP *****************************************************************************************************************************************************************************************************************
+vqfx1                      : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+vqfx2                      : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
+
+We'll try to get some infos now from our Arista routers :
+
+```
+vagrant@server:~$ ansible-playbook -i inventories/hosts pb.test.veos.yaml --limit arista --vault-id ~/.vault_pass.txt
+```
+
+OUTPUT
+
+```
+vagrant@server:~$ ansible-playbook -i inventories/hosts pb.test.veos.yaml --limit arista --vault-id ~/.vault_pass.txt
+
+PLAY [Run commands on remote Arista devices] *******************************************************************************************************************************************************************************
+
+TASK [run show version on remote devices] **********************************************************************************************************************************************************************************
+ok: [veos4]
+ok: [veos3]
+
+TASK [Display result] ******************************************************************************************************************************************************************************************************
+ok: [veos3] => {
+    "msg": "Version is : 4.19.10M"
+}
+ok: [veos4] => {
+    "msg": "Version is : 4.19.10M"
+}
+
+PLAY RECAP *****************************************************************************************************************************************************************************************************************
+veos3                      : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+veos4                      : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
+
+
 Everything is tested and ready, let's start the lab now !
 
-
+/// TO UPDATE 
 
 # Labs
 

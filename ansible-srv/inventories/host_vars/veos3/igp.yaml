@@ -6,23 +6,23 @@ igp:
     name: lo0
     vlan: 0
   neighbors:
-  - interface: xe-0/0/1
+  - interface: Ethernet1
     peer: vqfx1
     speed: 10G
     type: local-core
     vlans:
     - id: 0
       ipv4:
-        local_ip: 192.168.3.2
-        netmask: 24
-        peer_ip: 192.168.3.1
-  - interface: xe-0/0/2
-    peer: vqfx2
+        local_ip: 10.0.0.1
+        netmask: 31
+        peer_ip: 10.0.0.0
+  - interface: Ethernet2
+    peer: veos4
     speed: 10G
     type: local-core
     vlans:
     - id: 0
       ipv4:
-        local_ip: 192.168.4.2
-        netmask: 24
-        peer_ip: 192.168.4.1
+        local_ip: 10.0.0.6
+        netmask: 31
+        peer_ip: 10.0.0.7

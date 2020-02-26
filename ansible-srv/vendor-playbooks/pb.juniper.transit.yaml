@@ -1,17 +1,13 @@
 ---
-- name: Config BGP of Juniper devices
-  hosts: all
+- name: Config Transit ports of Juniper devices
+  hosts: juniper
   connection: network_cli
   gather_facts: no
 
   roles:
     - Juniper.junos
     - tools
-    - bgp
-
-  vars:
-    ansible_network_os: junos
-    ansible_user: noc
+    - transit
 
   tasks:
 

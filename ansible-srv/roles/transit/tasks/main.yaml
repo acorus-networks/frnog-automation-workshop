@@ -1,5 +1,5 @@
 ---
-# tasks file for roles/bgp
+# tasks file for roles/transit
 
 - name: Create host specific configuration directory
   file: path=~/configs/{{ ansible_host }} state=directory
@@ -7,11 +7,23 @@
 - file: path=~/configs/{{ ansible_host }}/bgp.conf.part state=absent
 - file: path=~/configs/{{ ansible_host }}/{{ ansible_host }}.conf state=absent
 
-- name: BGP Configuration
+- name: BGP Configuration - Juniper
   template:
     src={{ item }}.j2
     dest=~/configs/{{ ansible_host }}/{{ item }}.part
   tags:
-    - bgp
+    - transit
+  when: "'juniper' in group_names"  
   with_items:
-    - bgp.conf
+    - transit-juniper.conf
+
+
+- name: BGP Configuration - Arista
+  template:
+    src={{ item }}.j2
+    dest=~/configs/{{ ansible_host }}/{{ item }}.part
+  tags:
+    - transit
+  when: "'arista' in group_names"
+  with_items:
+    - transit-arista.conf

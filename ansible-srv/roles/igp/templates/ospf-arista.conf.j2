@@ -1,0 +1,55 @@
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+
+{% if igp is defined %}
+{% if igp.loopbacks is defined %}
+{% for loopback in igp.loopbacks %}
+
+{% if loopback.ipv4 is defined %}
+
+!
+router ospf {% if loopback.vlan == 0 %}100{% else %}{{ loopback.vlan }}{% endif %}
+   router-id {{ loopback.ipv4.local_ip }}
+
+   {% if igp.neighbors is defined %}
+   {% for neighbor in igp.neighbors %}
+   {% if neighbor.vlans is defined %}
+   {% for vlan in neighbor.vlans %}
+
+
+
+   network {{ vlan.ipv4.local_ip }}/{{ vlan.ipv4.local_netmask }} area 0.0.0.0
+   {% endfor %}
+exit
+!
+
+
+{# Endif loopback.ipv4 is defined #}
+{% endif %}
+
+{# Endfor loopback in igp.loopbacks #}
+{% endfor %}
+{# Endif igp.loopbacks is defined #}
+{% endif %}
+
+
+{% if igp.neighbors is defined %}
+{% for neighbor in igp.neighbors %}
+{% if neighbor.vlans is defined %}
+{% for vlan in neighbor.vlans %}
+
+
+
+{# Endfor vlan in neighbors.vlans #}
+{% endfor %}
+{# Endif neighbors.vlans is defined #}
+{% endif %}
+
+{# Endfor loopback in igp.loopbacks #}
+{% endfor %}
+{# Endif igp.loopbacks is defined #}
+{% endif %}
+
+
+{# Endif igp is defined #}
+{% endif %}
+

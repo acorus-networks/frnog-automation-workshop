@@ -8,20 +8,42 @@
 - file: path=~/configs/{{ ansible_host }}/ospf.conf.part state=absent
 - file: path=~/configs/{{ ansible_host }}/{{ ansible_host }}.conf state=absent
 
-- name: IGP Configuration
+- name: IGP Configuration - Juniper
   template:
     src={{ item }}.j2
     dest=~/configs/{{ ansible_host }}/{{ item }}.part
   tags:
     - igp
+  when: "'juniper' in group_names"  
   with_items:
-    - igp.conf
+    - igp-juniper.conf
 
-- name: OSPF Configuration
+- name: OSPF Configuration - Juniper
   template:
     src={{ item }}.j2
     dest=~/configs/{{ ansible_host }}/{{ item }}.part
   tags:
     - ospf
+  when: "'juniper' in group_names"  
   with_items:
-    - ospf.conf
+    - ospf-juniper.conf
+
+- name: IGP Configuration - Arista
+  template:
+    src={{ item }}.j2
+    dest=~/configs/{{ ansible_host }}/{{ item }}.part
+  tags:
+    - igp
+  when: "'arista' in group_names"  
+  with_items:
+    - igp-arista.conf
+
+- name: OSPF Configuration - Arista
+  template:
+    src={{ item }}.j2
+    dest=~/configs/{{ ansible_host }}/{{ item }}.part
+  tags:
+    - ospf
+  when: "'arista' in group_names"  
+  with_items:
+    - ospf-arista.conf

@@ -1,10 +1,9 @@
 ---
+
 peers:
- - asn: 65500
-   local_ipv4: "10.200.0.1"
-   neighbor_ipv4: "10.200.0.2"
+ - lo: 10.200.0.2
    name: ibgp-vqfx2
- - asn: 65500
-   local_ipv4: "10.200.0.1"
-   neighbor_ipv4: "10.200.0.3"
-   name: ibgp-vqfx3
+ - lo: 10.200.0.3
+   name: ibgp-veos3
+ - lo: 10.200.0.4
+   name: ibgp-veos4

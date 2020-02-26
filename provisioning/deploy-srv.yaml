@@ -35,7 +35,10 @@
       command: mkdir -p /home/vagrant/.ansible/roles
 
     - name: install juniper ansible role
-      command: ansible-galaxy install -p /home/vagrant/.ansible/roles Juniper.junos    
+      command: ansible-galaxy install -p /home/vagrant/.ansible/roles Juniper.junos  
+
+    - name: install newest version of paramiko
+      command: pip install paramiko --upgrade
 
     - name: sync files for lab
       synchronize:
@@ -145,6 +148,6 @@
           192.168.100.22  veos3
           192.168.100.23  veos4
 
-
-
+    - name: create symb link for roles
+      command: "ln -s /home/vagrant/roles/ /home/vagrant/vendor-playbooks/roles"
 

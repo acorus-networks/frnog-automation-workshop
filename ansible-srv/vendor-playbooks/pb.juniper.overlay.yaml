@@ -1,17 +1,13 @@
 ---
-- name: Config Users of Juniper devices
-  hosts: all
+- name: Config BGP of Juniper devices
+  hosts: juniper
   connection: network_cli
   gather_facts: no
- 
+
   roles:
     - Juniper.junos
     - tools
-    - base
-
-  vars:
-    ansible_network_os: junos
-    ansible_user: noc
+    - overlay
 
   tasks:
 
