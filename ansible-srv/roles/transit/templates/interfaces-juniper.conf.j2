@@ -1,0 +1,26 @@
+{% if transit_interfaces is defined %}
+{% for interface in transit_interfaces %}
+
+interfaces {
+  {{ interface.name }} {
+    description "Transit: {{ interface.peer_name }}"
+    unit 0 {
+      description "Transit-ip: {{ interface.peer_name }}{% if interface.ipv4.peer_ip is defined %} - {{ interface.ipv4.peer_ip }}{% endif %}{% if interface.ipv6.peer_ip is defined %} - {{ interface.ipv6.peer_ip }}{% endif %}"
+      {% if interface.ipv4 is defined %}
+      family inet {
+        address {{ vlan.ipv4.local_ip }}/{{ vlan.ipv4.netmask }};
+      }
+      {% endif %}
+      {% if interface.ipv6 is defined %}
+      family inet6 {
+        address {{ interface.ipv6.local_ip }}/{{ interface.ipv6.netmask }};
+      }
+      {% endif %}
+    }
+  }
+}
+
+{# endfor interface in transit_interfaces #}
+{% endfor %}
+{# endif transit_interfaces is defined #}
+{% endif %}

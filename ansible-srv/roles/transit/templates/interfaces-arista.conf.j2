@@ -1,0 +1,19 @@
+{% if transit_interfaces is defined %}
+{% for interface in transit_interfaces %}
+
+!
+interface Loopback{{ loopback.vlan }}
+  description "Transit: {{ interface.peer_name }}{% if interface.ipv4.peer_ip is defined %} - {{ interface.ipv4.peer_ip }}{% endif %}{% if interface.ipv6.peer_ip is defined %} - {{ interface.ipv6.peer_ip }}{% endif %}"
+  {% if interface.ipv4 is defined %}
+  ip address {{ loopback.ipv4.local_ip }}/{{ loopback.ipv4.netmask }}
+  {% endif %}
+  {% if interface.ipv6 is defined %}
+  ipv6 address {{ loopback.ipv6.local_ip }}/{{ loopback.ipv6.netmask }}
+  {% endif %}
+exit
+!
+
+{# endfor interface in transit_interfaces #}
+{% endfor %}
+{# endif transit_interfaces is defined #}
+{% endif %}

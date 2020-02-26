@@ -1,0 +1,64 @@
+{% if transit_sessions is defined %}
+
+protocols {
+  bgp {
+    group ipv4-transit {
+      /* eBGP */
+      type external;
+      description "Group ipv4 transit";
+      /* IPv4 unicast only */
+      family inet {
+        unicast;
+      }
+      local-as {{ my_asn }};
+    }
+    group ipv6-transit {
+      /* eBGP */
+      type external;
+      description "Group ipv6 transit";
+      /* IPv6 unicast only */
+      family inet6 {
+        unicast;
+      }
+      local-as {{ my_asn }};
+    }
+  }
+}
+
+{% for session in transit_sessions %}
+{% if session.ipv4 is defined %}
+protocols {
+  bgp {
+    group ipv4-transit {
+      replace:
+      neighbor {{ session.ipv4.peer_ip }} {
+        description "AS{{ session.peer_asn }} {{ session.name }}";
+        peer-as {{ session.peer_asn }};
+        import ipv4-{{ session.peer_asn }}-in;
+        export ipv4-{{ session.peer_asn }}-out;
+      }
+    }
+  }
+}
+{# if session.ipv4 is defined #}
+{% endif %}
+{% if session.ipv6 is defined %}
+protocols {
+  bgp {
+    group ipv6-transit {
+      replace:
+      neighbor {{ session.ipv6.peer_ip }} {
+        description "AS{{ session.peer_asn }} {{ session.name }}";
+        peer-as {{ session.peer_asn }};
+        import ipv6-{{ session.peer_asn }}-in;
+        export ipv6-{{ session.peer_asn }}-out;
+      }
+    }
+  }
+}
+{# if session.ipv6 is defined #}
+{% endif %}
+{# for session in transit_sessions #}
+{% endfor %}
+{# if transit_sessions is defined #}
+{% endif %}

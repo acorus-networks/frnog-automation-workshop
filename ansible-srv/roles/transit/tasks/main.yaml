@@ -1,29 +1,31 @@
 ---
-# tasks file for roles/transit
 
-- name: Create host specific configuration directory
-  file: path=~/configs/{{ ansible_host }} state=directory
-
-- file: path=~/configs/{{ ansible_host }}/bgp.conf.part state=absent
-- file: path=~/configs/{{ ansible_host }}/{{ ansible_host }}.conf state=absent
-
-- name: BGP Configuration - Juniper
+- name: Transit configuration - Juniper
   template:
     src={{ item }}.j2
-    dest=~/configs/{{ ansible_host }}/{{ item }}.part
+    dest=~/configs/{{ ansible_host }}/{{ ansible_loop.index }}_{{ item }}.part
   tags:
     - transit
-  when: "'juniper' in group_names"  
-  with_items:
-    - transit-juniper.conf
+  when: 
+    - "'juniper' in group_names"  
+  loop:
+    - interfaces-juniper.conf
+    - bgp-juniper.conf
+    - policies-juniper.conf
+  loop_control:
+    extended: yes
 
-
-- name: BGP Configuration - Arista
+- name: Transit configuration - Arista
   template:
     src={{ item }}.j2
-    dest=~/configs/{{ ansible_host }}/{{ item }}.part
+    dest=~/configs/{{ ansible_host }}/{{ ansible_loop.index }}_{{ item }}.part
   tags:
     - transit
-  when: "'arista' in group_names"
-  with_items:
-    - transit-arista.conf
+  when: 
+    - "'arista' in group_names"  
+  loop:
+    - interfaces-arista.conf
+    - bgp-arista.conf
+    - policies-arista.conf
+  loop_control:
+    extended: yes
