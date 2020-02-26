@@ -1,2 +1,23 @@
 ---
 
+transit_interfaces:
+- name: xe-0/0/2
+  cid: ID-1
+  peer_name: Transit 1
+  ipv4:
+    local_ip: 100.64.1.1
+    netmask: 31
+    peer_ip: 100.64.1.0
+  ipv6:
+    local_ip: fd01:1::1
+    netmask: 127
+    peer_ip: fd01:1::0
+
+
+transit_sessions:
+- name: Transit 1
+  peer_asn: 35085
+  ipv4:
+    peer_ip: 100.64.1.0
+  ipv6:
+    peer_ip: fd0q:1::0
