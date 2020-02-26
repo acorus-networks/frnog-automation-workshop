@@ -45,7 +45,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         # Interco vqfx2 - xe-0/0/1
         vqfx.vm.network 'private_network', auto_config: false, nic_type: '82540EM', virtualbox__intnet: "#{UUID}_seg2"
         # Interco Public route server - xe-0/0/2
-        vqfx.vm.network 'private_network', auto_config: false, nic_type: '82540EM', virtualbox__intnet: "#{UUID}_seg10"
+        vqfx.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
         # Free
         vqfx.vm.network 'private_network', auto_config: false, nic_type: '82540EM', virtualbox__intnet: "#{UUID}_seg11"
         # Inband management port - xe-0/0/4 - seg5
@@ -106,9 +106,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         veos.vm.synced_folder '.', '/vagrant', disabled: true
 
         # Management port
-        # No PFE on Arista
-        # veos.vm.network 'private_network', auto_config: false, nic_type: '82540EM', virtualbox__intnet: "#{UUID}_veos_internal_#{id}"
-        # veos.vm.network 'private_network', auto_config: false, virtualbox__intnet: "#{UUID}_reserved-bridge"
 
         # Interco veos3 (eth1) - vqfx1 (xe-0/0/0) - seg1
         veos.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg1"
@@ -116,6 +113,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         veos.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg4"
         # Inband management port - eth3 - seg 5
         veos.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg5"
+        # Interco Public route server - eth4
+        veos.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
+
 
         # Enable eAPI in the EOS config
         veos.vm.provision 'shell', inline: <<-SHELL
@@ -135,6 +135,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             interface Ethernet3
               no switchport
               ip address 192.168.100.22/24
+            exit
+            interface Ethernet4
+              no switchport
+              ip address 192.168.1.239/24
             exit
             "
         SHELL
