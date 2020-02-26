@@ -1,6 +1,6 @@
 # This task configure the ubuntu machine
-- name: Customer setup
-  hosts: cust
+- name: Transit setup
+  hosts: transit
   user: vagrant
   become: yes
   gather_facts: no

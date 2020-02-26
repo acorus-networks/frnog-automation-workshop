@@ -6,14 +6,14 @@ interfaces:
       ip: 10.1.99.4
       netmask: 31
     ipv6:
-      ip: fd00:1::4
+      ip: fdaa:1::4
       netmask: 127 
 loopback:
   ipv4: 
     ip: 10.35.2.81
     netmask: 24
   ipv6:
-    ip: "fddd::35:281"
+    ip: "fddd:2::35:281"
     netmask: 64
 bgp:
   id: 10.35.2.81
@@ -23,5 +23,5 @@ bgp:
       - peer_ip: 10.1.99.5
         peer_asn: 65501
     ipv6:
-      - peer_ip: fd00:1::5
+      - peer_ip: fdaa:1::5
         peer_asn: 65501

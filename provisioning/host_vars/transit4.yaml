@@ -6,7 +6,7 @@ interfaces:
       ip: 10.1.99.6
       netmask: 31
     ipv6:
-      ip: fd00:1::6
+      ip: fdaa:1::6
       netmask: 127 
 loopback:
   ipv4: 
@@ -23,5 +23,5 @@ bgp:
       - peer_ip: 10.1.99.7
         peer_asn: 65501
     ipv6:
-      - peer_ip: fd00:1::7
+      - peer_ip: fdaa:1::7
         peer_asn: 65501
