@@ -44,10 +44,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vqfx.vm.network 'private_network', auto_config: false, nic_type: '82540EM', virtualbox__intnet: "#{UUID}_seg1"
         # Interco vqfx2 - xe-0/0/1
         vqfx.vm.network 'private_network', auto_config: false, nic_type: '82540EM', virtualbox__intnet: "#{UUID}_seg2"
-        # Interco Public route server - xe-0/0/2
+        # Interco Public mx1 - xe-0/0/2
         vqfx.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
-        # Free
-        vqfx.vm.network 'private_network', auto_config: false, nic_type: '82540EM', virtualbox__intnet: "#{UUID}_seg11"
+        # Interco Public mx2 - xe-0/0/3
+        vqfx.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
         # Inband management port - xe-0/0/4 - seg5
         vqfx.vm.network 'private_network', auto_config: false, nic_type: '82540EM', virtualbox__intnet: "#{UUID}_seg5"
     end
@@ -111,11 +111,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         veos.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg1"
         # Interco veos4 (eth2) - veos3 (eth3) - seg4
         veos.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg4"
-        # Inband management port - eth3 - seg 5
-        veos.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg5"
-        # Interco Public route server - eth4
+        # Interco Public arista1 - eth3
         veos.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
-
+        # Interco Public arista2 - eth4
+        veos.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
+        # Inband management port - eth5 - seg 5
+        veos.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg5"
 
         # Enable eAPI in the EOS config
         veos.vm.provision 'shell', inline: <<-SHELL
@@ -134,12 +135,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             exit
             interface Ethernet3
               no switchport
-              ip address 192.168.100.22/24
+              ip address 10.10.99.5/31
             exit
             interface Ethernet4
               no switchport
-              ip address 192.168.1.239/24
+              ip address 10.10.99.2.7/31
             exit
+            interface Ethernet5
+              no switchport
+              ip address 192.168.100.22/24
+            exit            
             "
         SHELL
 
