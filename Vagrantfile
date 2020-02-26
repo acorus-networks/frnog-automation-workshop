@@ -45,11 +45,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         # Interco vqfx2 - xe-0/0/1
         vqfx.vm.network 'private_network', auto_config: false, nic_type: '82540EM', virtualbox__intnet: "#{UUID}_seg2"
         # Interco Public mx1 - xe-0/0/2
-        #vqfx.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
-        vqfx.vm.network 'private_network', auto_config: false, nic_type: '82540EM', virtualbox__intnet: "#{UUID}_seg21"
+        vqfx.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
         # Interco Public mx2 - xe-0/0/3
-        #vqfx.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
-        vqfx.vm.network 'private_network', auto_config: false, nic_type: '82540EM', virtualbox__intnet: "#{UUID}_seg22"
+        vqfx.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
         # Inband management port - xe-0/0/4 - seg5
         vqfx.vm.network 'private_network', auto_config: false, nic_type: '82540EM', virtualbox__intnet: "#{UUID}_seg5"
     end
@@ -114,11 +112,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         # Interco veos4 (eth2) - veos3 (eth3) - seg4
         veos.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg4"
         # Interco Public arista1 - eth3
-        #veos.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
-        veos.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg23"
+        veos.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
         # Interco Public arista2 - eth4
-        #veos.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
-        veos.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg24"
+        veos.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
         # Inband management port - eth5 - seg 5
         veos.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg5"
 
@@ -208,54 +204,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         srv.vm.network 'private_network', ip: "192.168.100.10", virtualbox__intnet: "#{UUID}_seg5"
         srv.vm.boot_timeout = 240
         srv.ssh.insert_key = true
-    end
-
-##############
-    ### Transit1 : 
-    ##############
-    config.vm.define "transit1" do |cust|
-        cust.vm.box = "debian/buster64"
-        cust.vm.hostname = "transit1"
-        # eth1
-        cust.vm.network 'private_network', auto_config: false, virtualbox__intnet: "#{UUID}_seg3"
-        cust.vm.boot_timeout = 1200
-        cust.ssh.insert_key = true
-    end
-
-    ##############
-    ### Transit2 : 
-    ##############
-    config.vm.define "transit2" do |cust|
-        cust.vm.box = "debian/buster64"
-        cust.vm.hostname = "transit2"
-        # eth1
-        cust.vm.network 'private_network', auto_config: false, virtualbox__intnet: "#{UUID}_seg13"
-        cust.vm.boot_timeout = 1200
-        cust.ssh.insert_key = true
-    end
-
-    ##############
-    ### Transit3 : 
-    ##############
-    config.vm.define "transit3" do |cust|
-        cust.vm.box = "debian/buster64"
-        cust.vm.hostname = "transit3"
-        # eth1
-        cust.vm.network 'private_network', auto_config: false, virtualbox__intnet: "#{UUID}_seg13"
-        cust.vm.boot_timeout = 1200
-        cust.ssh.insert_key = true
-    end
-
-    ##############
-    ### Transit4 : 
-    ##############
-    config.vm.define "transit4" do |cust|
-        cust.vm.box = "debian/buster64"
-        cust.vm.hostname = "transit4"
-        # eth1
-        cust.vm.network 'private_network', auto_config: false, virtualbox__intnet: "#{UUID}_seg13"
-        cust.vm.boot_timeout = 1200
-        cust.ssh.insert_key = true
     end
 
     ##############################
