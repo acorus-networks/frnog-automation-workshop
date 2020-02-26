@@ -37,7 +37,7 @@
       shell: "sudo ifdown lo && sudo ifup lo"
 
     - name: Quick fix interfaces
-      shell: "sudo ifdown eth2 && sudo ifup eth2"   
+      shell: "sudo ifdown eth1 && sudo ifup eth1s"   
 
     - name: Build and copy BIRD IPv4 configuration
       template:
