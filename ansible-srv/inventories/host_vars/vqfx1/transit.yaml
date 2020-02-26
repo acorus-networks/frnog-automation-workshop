@@ -1,16 +1,23 @@
 ---
+transit_interfaces:
+- name: xe-0/0/2
+  cid: ID-1
+  peer_name: Transit 1
+  ipv4:
+    local_ip: 100.64.1.1
+    netmask: 31
+    peer_ip: 100.64.1.0
+  ipv6:
+    local_ip: fd01:1::1
+    netmask: 127
+    peer_ip: fd01:1::0
 
-transit:
-  neighbors:
-  - interface: xe-0/0/2
-    peer: mx1-acorus
-    ipv4:
-      local_ip: 10.10.99.1
-      netmask: 31
-      peer_ip: 10.10.99.0
-  - interface: xe-0/0/3
-    peer: mx2-acorus
-    ipv4:
-      local_ip: 10.10.99.3
-      netmask: 31
-      peer_ip: 10.10.99.2
+
+transit_sessions:
+- name: Transit 1
+  peer_asn: 35085
+  ipv4:
+    peer_ip: 100.64.1.0
+  ipv6:
+    peer_ip: fd0q:1::0
+
