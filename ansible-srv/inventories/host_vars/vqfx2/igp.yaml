@@ -3,26 +3,14 @@ igp:
   - ipv4:
       local_ip: 10.200.0.2
       netmask: 32
-    name: lo0
-    vlan: 0
   neighbors:
   - interface: xe-0/0/0
     peer: veos4
-    speed: 10G
-    type: local-core
-    vlans:
-    - id: 0
-      ipv4:
-        local_ip: 10.0.0.4
-        netmask: 31
-        peer_ip: 10.0.0.5
+    ipv4:
+      local_ip: 10.0.0.4
+      netmask: 31
   - interface: xe-0/0/1
     peer: vqfx1
-    speed: 10G
-    type: local-core
-    vlans:
-    - id: 0
-      ipv4:
-        local_ip: 10.0.0.3
-        netmask: 31
-        peer_ip: 10.0.0.2
+    ipv4:
+      local_ip: 10.0.0.3
+      netmask: 31

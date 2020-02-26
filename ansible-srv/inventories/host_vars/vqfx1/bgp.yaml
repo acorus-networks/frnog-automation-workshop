@@ -1,5 +1,4 @@
 ---
-# IBGP routers
 
 peers:
  - vqfx2

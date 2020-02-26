@@ -1,9 +1,7 @@
 ---
 
 peers:
- - lo: 10.200.0.2
-   name: ibgp-vqfx2
- - lo: 10.200.0.1
-   name: ibgp-vqfx1
- - lo: 10.200.0.3
-   name: ibgp-veos3
+ - vqfx2
+ - vqfx1
+ - veos3
+
