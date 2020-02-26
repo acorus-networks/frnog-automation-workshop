@@ -45,9 +45,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         # Interco vqfx2 - xe-0/0/1
         vqfx.vm.network 'private_network', auto_config: false, nic_type: '82540EM', virtualbox__intnet: "#{UUID}_seg2"
         # Interco Public mx1 - xe-0/0/2
-        vqfx.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
+        #vqfx.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
+        vqfx.vm.network 'private_network', auto_config: false, nic_type: '82540EM', virtualbox__intnet: "#{UUID}_seg21"
         # Interco Public mx2 - xe-0/0/3
-        vqfx.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
+        #vqfx.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
+        vqfx.vm.network 'private_network', auto_config: false, nic_type: '82540EM', virtualbox__intnet: "#{UUID}_seg22"
         # Inband management port - xe-0/0/4 - seg5
         vqfx.vm.network 'private_network', auto_config: false, nic_type: '82540EM', virtualbox__intnet: "#{UUID}_seg5"
     end
@@ -112,9 +114,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         # Interco veos4 (eth2) - veos3 (eth3) - seg4
         veos.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg4"
         # Interco Public arista1 - eth3
-        veos.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
+        #veos.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
+        vqfx.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg23"
         # Interco Public arista2 - eth4
-        veos.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
+        #veos.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
+        vqfx.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg24"
         # Inband management port - eth5 - seg 5
         veos.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg5"
 
@@ -206,6 +210,54 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         srv.ssh.insert_key = true
     end
 
+##############
+    ### Transit1 : 
+    ##############
+    config.vm.define "transit1" do |cust|
+        cust.vm.box = "debian/buster64"
+        cust.vm.hostname = "transit1"
+        # eth1
+        cust.vm.network 'private_network', auto_config: false, virtualbox__intnet: "#{UUID}_seg3"
+        cust.vm.boot_timeout = 1200
+        cust.ssh.insert_key = true
+    end
+
+    ##############
+    ### Transit2 : 
+    ##############
+    config.vm.define "transit2" do |cust|
+        cust.vm.box = "debian/buster64"
+        cust.vm.hostname = "transit2"
+        # eth1
+        cust.vm.network 'private_network', auto_config: false, virtualbox__intnet: "#{UUID}_seg13"
+        cust.vm.boot_timeout = 1200
+        cust.ssh.insert_key = true
+    end
+
+    ##############
+    ### Transit3 : 
+    ##############
+    config.vm.define "transit3" do |cust|
+        cust.vm.box = "debian/buster64"
+        cust.vm.hostname = "transit3"
+        # eth1
+        cust.vm.network 'private_network', auto_config: false, virtualbox__intnet: "#{UUID}_seg13"
+        cust.vm.boot_timeout = 1200
+        cust.ssh.insert_key = true
+    end
+
+    ##############
+    ### Transit4 : 
+    ##############
+    config.vm.define "transit4" do |cust|
+        cust.vm.box = "debian/buster64"
+        cust.vm.hostname = "transit4"
+        # eth1
+        cust.vm.network 'private_network', auto_config: false, virtualbox__intnet: "#{UUID}_seg13"
+        cust.vm.boot_timeout = 1200
+        cust.ssh.insert_key = true
+    end
+
     ##############################
     ## VQFX provisioning       ###
     ## exclude Windows host    ###
@@ -236,6 +288,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # end
     # end
 
+    if !Vagrant::Util::Platform.windows?
+        config.vm.provision "ansible" do |ansible|
+            ansible.groups = {
+                "transit" => ["transit1", "transit2", "transit3", "transit4"]
+            }
+            ansible.playbook = "provisioning/deploy-transit.yaml"
+        end
+    end
 
     ##############################
     ## Server provisioning     ###

@@ -1,0 +1,60 @@
+# This task configure the ubuntu machine
+- name: Customer setup
+  hosts: cust
+  user: vagrant
+  become: yes
+  gather_facts: no
+
+  tasks:
+
+    - name: Update repositories cache and install packages
+      apt:
+        name: ansible
+        update_cache: yes 
+
+    - name: Upgrade all packages to the latest version
+      apt:
+        name: "*"
+        state: latest
+        force_apt_get: yes
+
+    - name: Install a list of packages
+      apt:
+        name: "{{ packages }}"
+      vars:
+        packages:
+        - bird
+        - vim
+        - net-tools
+        - mtr
+
+    - name: Networks
+      template:
+        src=interfaces.conf.j2
+        dest=/etc/network/interfaces
+
+    - name: Quick fix interfaces
+      shell: "sudo ifdown lo && sudo ifup lo"
+
+    - name: Quick fix interfaces
+      shell: "sudo ifdown eth2 && sudo ifup eth2"   
+
+    - name: Build and copy BIRD IPv4 configuration
+      template:
+        src=bird.conf.j2
+        dest=/etc/bird/bird.conf
+
+    - name: Build and copy BIRD IPv6 configuration
+      template:
+        src=bird6.conf.j2
+        dest=/etc/bird/bird6.conf
+
+    - name: Restart Bird v4
+      service:
+        name: bird
+        state: restarted
+
+    - name: Restart Bird v6
+      service:
+        name: bird6
+        state: restarted

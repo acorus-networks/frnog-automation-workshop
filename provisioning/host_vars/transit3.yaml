@@ -1,0 +1,27 @@
+---
+
+interfaces:
+  - name: eth1
+    ipv4: 
+      ip: 10.1.99.4
+      netmask: 31
+    ipv6:
+      ip: fd00:1::4
+      netmask: 127 
+loopback:
+  ipv4: 
+    ip: 10.135.2.80
+    netmask: 24
+  ipv6:
+    ip: "fddd::135:280"
+    netmask: 64
+bgp:
+  id: 10.135.2.80
+  asn: 35280
+  sessions:
+    ipv4:
+      - peer_ip: 10.1.99.5
+        peer_asn: 65501
+    ipv6:
+      - peer_ip: fd00:1::5
+        peer_asn: 65501
