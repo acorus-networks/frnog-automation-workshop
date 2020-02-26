@@ -106,9 +106,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         veos.vm.synced_folder '.', '/vagrant', disabled: true
 
         # Management port
-        # No PFE on Arista
-        # veos.vm.network 'private_network', auto_config: false, nic_type: '82540EM', virtualbox__intnet: "#{UUID}_veos_internal_#{id}"
-        # veos.vm.network 'private_network', auto_config: false, virtualbox__intnet: "#{UUID}_reserved-bridge"
 
         # Interco veos3 (eth1) - vqfx1 (xe-0/0/0) - seg1
         veos.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg1"
@@ -117,7 +114,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         # Inband management port - eth3 - seg 5
         veos.vm.network 'private_network', auto_config: false, ip: '169.254.1.11', virtualbox__intnet: "#{UUID}_seg5"
         # Interco Public route server - eth4
-        vqfx.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
+        veos.vm.network 'public_network', bridge: "eno1", auto_config: false, nic_type: '82540EM'
 
 
         # Enable eAPI in the EOS config
