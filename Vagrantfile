@@ -139,7 +139,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             exit
             interface Ethernet4
               no switchport
-              ip address 10.10.99.2.7/31
+              ip address 10.10.99.7/31
             exit
             interface Ethernet5
               no switchport

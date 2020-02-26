@@ -10,7 +10,7 @@ management api http-commands
 {% for interface in interfaces %}
 interface {{ interface.name }}
    no switchport
-   ip address {{ interface.ip }}/24
+   ip address {{ interface.ip }}
 !
 {% endfor %}
 end
