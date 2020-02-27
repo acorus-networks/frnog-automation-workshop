@@ -1,16 +1,19 @@
 ---
 
 # Données en entrée de ton script :
-
 peers:
- - vqfx2
- - veos3
- - veos4
+  - vqfx2
+  - veos3
+  - veos4
 
-# Données que nous renvoit :
-
-# ibgp:
-#   peers:
-#      - 10.0.0.1 # ip lo de vqfx2 ...
-#      - 10.0.0.2
-#      - 10.0.0.3
+# Données que nous renvoit Yaani:
+ibgp_peers:
+  - ipv4: 10.200.0.2
+    ipv6: fd00:1::2
+    name: veos2
+  - ipv4: 10.200.0.3
+    ipv6: fd00:1::3
+    name: veos3
+  - ipv4: 10.200.0.4
+    ipv6: fd00:1::4
+    name: veos4
