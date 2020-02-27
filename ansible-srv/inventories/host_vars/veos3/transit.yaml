@@ -1,0 +1,39 @@
+---
+
+transit_interfaces:
+- name: Ethernet3
+  cid: ID-3
+  peer_name: Transit 3
+  ipv4:
+    local_ip: 10.1.99.5
+    netmask: 31
+    peer_ip: 10.1.99.4
+  ipv6:
+    local_ip: fdaa:1::5
+    netmask: 127
+    peer_ip: fdaa:1::4
+- name: Ethernet4
+  cid: ID-4
+  peer_name: Transit 4
+  ipv4:
+    local_ip: 10.1.99.7
+    netmask: 31
+    peer_ip: 10.1.99.6
+  ipv6:
+    local_ip: fdaa:1::7
+    netmask: 127
+    peer_ip: fdaa:1::6
+
+transit_sessions:
+- name: Transit 3
+  peer_asn: 35085
+  ipv4:
+    peer_ip: 10.1.99.4
+  ipv6:
+    peer_ip: fdaa:1::4
+- name: Transit 4
+  peer_asn: 33930
+  ipv4:
+    peer_ip: 10.1.99.6
+  ipv6:
+    peer_ip: fdaa:1::6
