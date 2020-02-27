@@ -217,7 +217,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         cust.vm.box = "debian/buster64"
         cust.vm.hostname = "transit1"
         # eth1
-        cust.vm.network 'private_network', auto_config: false, virtualbox__intnet: "#{UUID}_seg3"
+        cust.vm.network 'private_network', auto_config: false, virtualbox__intnet: "#{UUID}_seg21"
         cust.vm.boot_timeout = 1200
         cust.ssh.insert_key = true
     end
@@ -229,7 +229,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         cust.vm.box = "debian/buster64"
         cust.vm.hostname = "transit2"
         # eth1
-        cust.vm.network 'private_network', auto_config: false, virtualbox__intnet: "#{UUID}_seg13"
+        cust.vm.network 'private_network', auto_config: false, virtualbox__intnet: "#{UUID}_seg22"
         cust.vm.boot_timeout = 1200
         cust.ssh.insert_key = true
     end
@@ -241,7 +241,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         cust.vm.box = "debian/buster64"
         cust.vm.hostname = "transit3"
         # eth1
-        cust.vm.network 'private_network', auto_config: false, virtualbox__intnet: "#{UUID}_seg13"
+        cust.vm.network 'private_network', auto_config: false, virtualbox__intnet: "#{UUID}_seg23"
         cust.vm.boot_timeout = 1200
         cust.ssh.insert_key = true
     end
@@ -253,7 +253,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         cust.vm.box = "debian/buster64"
         cust.vm.hostname = "transit4"
         # eth1
-        cust.vm.network 'private_network', auto_config: false, virtualbox__intnet: "#{UUID}_seg13"
+        cust.vm.network 'private_network', auto_config: false, virtualbox__intnet: "#{UUID}_seg24"
         cust.vm.boot_timeout = 1200
         cust.ssh.insert_key = true
     end
