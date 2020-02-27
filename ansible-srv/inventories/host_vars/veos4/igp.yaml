@@ -7,7 +7,7 @@ igp:
   - interface: Ethernet1
     peer: vqfx2
     ipv4:
-      ocal_ip: 10.0.0.5
+      local_ip: 10.0.0.5
       netmask: 31
   - interface: Ethernet2
     peer: veos3

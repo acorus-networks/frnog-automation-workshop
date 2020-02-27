@@ -1,6 +1,16 @@
 ---
 
+# Données en entrée de ton script :
+
 peers:
  - vqfx2
  - veos3
  - veos4
+
+# Données que nous renvoit :
+
+# ibgp:
+#   peers:
+#      - 10.0.0.1 # ip lo de vqfx2 ...
+#      - 10.0.0.2
+#      - 10.0.0.3
