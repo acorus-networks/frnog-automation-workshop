@@ -1,8 +1,6 @@
-#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+{% if igp is defined %}
 
 groups {
-
-  replace:{{ "\n" }}
   /* OSPF Core */
   ospf-core {
     protocols {
@@ -15,32 +13,13 @@ groups {
       }
     }
   }
-
-  replace:{{ "\n" }}
-  /* OSPF for local core link */
-  ospf-local-core {
+  /* OSPF3 Core */
+  ospf3-core {
     protocols {
-      ospf {
+      ospf3 {
         area <*> {
           interface <*> {
             interface-type p2p;
-            metric 2500;
-          }
-        }
-      }
-    }
-  }
-
-  replace:{{ "\n" }}
-  /* OSPF authentication */
-  ospf-authentication {
-    protocols {
-      ospf {
-        area <*> {
-          interface <*> {
-            authentication {
-              simple-password "$9$vRkW-wkqfFnCHq0BEhrl";
-            }
           }
         }
       }
@@ -48,85 +27,57 @@ groups {
   }
 }
 
-{% if igp is defined %}
-{% if igp.loopbacks is defined %}
-{% for loopback in igp.loopbacks %}
+{% if igp.loopback is defined %}
+routing-options {
+  router-id {{ loopback.ipv4.local_ip }};
+}
 
-{% if loopback.ipv4 is defined %}
-
-    routing-options {
-      replace:
-
-      router-id {{ loopback.ipv4.local_ip }};
-    }
-
-    protocols {
-      ospf {
-      replace:
-        traceoptions {
-          file ospf_inet.log size 1m files 5;
-          flag error;
-        }
-
-        area 0.0.0.0 {
-          replace:
-          interface {{ loopback.name }}.{{ loopback.vlan }} {
-            passive;
-          }
-        }
+protocols {
+  ospf {   
+    area 0.0.0.0 {
+      interface lo0.0 {
+        passive;
       }
     }
-
-{# Endif loopback.ipv4 is defined #}
-{% endif %}
-
-{# Endfor loopback in igp.loopbacks #}
-{% endfor %}
-{# Endif igp.loopbacks is defined #}
+  }
+  ospf3 {   
+    area 0.0.0.0 {
+      interface lo0.0 {
+        passive;
+      }
+    }
+  }
+}
+{# if igp.loopback is defined #}
 {% endif %}
 
 
 {% if igp.neighbors is defined %}
 {% for neighbor in igp.neighbors %}
-{% if neighbor.vlans is defined %}
-{% for vlan in neighbor.vlans %}
-
-    protocols {
-      ospf {
-        area 0.0.0.0 {
-
-          replace:
-
-          interface {{ neighbor.interface }}.{{ vlan.id }} {
-            apply-groups ospf-core;
-
-            apply-groups ospf-authentication;
-
-            {% if neighbor.type is defined %}
-            apply-groups ospf-{{ neighbor.type }};
-            {# endif neighbor.type is defined #}
-            {% endif %}
-
-            {% if neighbor.metric is defined -%}
-            metric {{ neighbor.metric }};
-            {# if neighbor.metric is defined #}
-            {%- endif %}
-          }
-        }
+protocols {
+  ospf {
+    area 0.0.0.0 {
+      interface {{ neighbor.interface }}.0 {
+        apply-groups ospf-core;
       }
     }
-
-{# Endfor vlan in neighbors.vlans #}
+  }
+}
+protocols {
+  ospf3 {
+    area 0.0.0.0 {
+      interface {{ neighbor.interface }}.0 {
+        apply-groups ospf3-core;
+      }
+    }
+  }
+}
+{# for neighbor in igp.neighbors #}
 {% endfor %}
-{# Endif neighbors.vlans is defined #}
+{# if igp.neighbors is defined #}
 {% endif %}
 
-{# Endfor loopback in igp.loopbacks #}
-{% endfor %}
-{# Endif igp.loopbacks is defined #}
-{% endif %}
 
-
-{# Endif igp is defined #}
+{# if igp is defined #}
 {% endif %}
 

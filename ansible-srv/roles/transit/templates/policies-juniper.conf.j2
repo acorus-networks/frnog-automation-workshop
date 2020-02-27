@@ -1,24 +1,29 @@
 {% if transit_sessions is defined %}
-
 {% for session in transit_sessions %}
+
 {% if session.ipv4 is defined %}
-policy-statement ipv4-{{ session.peer_asn }}-in {
-  then accept;
-}
-policy-statement ipv4-{{ session.peer_asn }}-out {
-  then accept;
+policy-options {
+  policy-statement ipv4-{{ session.peer_asn }}-in {
+    then accept;
+  }
+  policy-statement ipv4-{{ session.peer_asn }}-out {
+    then accept;
+  }
 }
 {% endif %}
+
 {% if session.ipv6 is defined %}
-policy-statement ipv6-{{ session.peer_asn }}-in {
-  then accept;
-}
-policy-statement ipv6-{{ session.peer_asn }}-out {
-  then accept;
+policy-options {
+  policy-statement ipv6-{{ session.peer_asn }}-in {
+    then accept;
+  }
+  policy-statement ipv6-{{ session.peer_asn }}-out {
+    then accept;
+  }
 }
 {% endif %}
+
 {# for session in transit_sessions #}
 {% endfor %}
-
 {# if transit_sessions is defined #}
 {% endif %}

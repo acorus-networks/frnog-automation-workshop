@@ -1,0 +1,45 @@
+{% if ibgp_peers is defined %}
+protocols {
+  bgp {
+    group ipv4-ibgp {
+      type internal;
+      description "iBGP IPv4";
+      family inet {
+        unicast;
+      }
+      local-as {{ my_asn }};
+      import ipv4-ibgp-in;
+      export ipv4-ibgp-out;
+      {% for peer in ibgp_peers %}
+      {% if peer.ipv4 is defined %}
+      neighbor {{ peer.ipv4.peer_ip }};
+      {% endif %}
+      {% endfor %}
+    }
+  }
+}
+
+protocols {
+  bgp {
+    group ipv6-ibgp {
+      type internal;
+      description "iBGP IPv6";
+      family inet6 {
+        unicast;
+      }
+      local-as {{ my_asn }};
+      import ipv6-ibgp-in;
+      export ipv6-ibgp-out;
+      {% for peer in ibgp_peers %}
+      {% if peer.ipv6 is defined %}
+      neighbor {{ peer.ipv6.peer_ip }};
+      {% endif %}
+      {% endfor %}
+    }
+  }
+}
+{# if ibgp_peers is defined #}
+{% endif %}
+
+
+

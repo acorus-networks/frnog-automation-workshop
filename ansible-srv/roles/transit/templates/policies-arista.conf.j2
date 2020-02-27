@@ -1,20 +1,21 @@
 {% if transit_sessions is defined %}
-
 {% for session in transit_sessions %}
+
 {% if session.ipv4 is defined %}
 route-map IPV4-AS{{ session.peer_asn }}-IN permit 10
 !
 route-map IPV4-AS{{ session.peer_asn }}-OUT permit 10
 !
 {% endif %}
+
 {% if session.ipv6 is defined %}
 route-map IPV6-AS{{ session.peer_asn }}-IN permit 10
 !
 route-map IPV6-AS{{ session.peer_asn }}-OUT permit 10
 !
 {% endif %}
+
 {# for session in transit_sessions #}
 {% endfor %}
-
 {# if transit_sessions is defined #}
 {% endif %}
