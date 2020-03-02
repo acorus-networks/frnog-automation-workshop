@@ -6,8 +6,19 @@ data_sources: # --------------------------------------------------------
       url: http://ks01.commit.ninja:32776/
       token: 0123456789abcdef0123456789abcdef01234567
 
+  Sessions:
+    type: file
+    args:
+      path: sessions.yaml
+      content_type: yaml
 
 data_sets: # --------------------------------------------------------
+  - name: sessions
+    from: source
+    args:
+      name: Sessions
+      filter: .[]
+
   - name: site_info
     from: source
     args:
@@ -68,7 +79,7 @@ data_sets: # --------------------------------------------------------
         - name: nb_devices
           pivot: .id
 
-  - name: final_devices
+  - name: decorated_devices
     from: decoration
     args:
       main:
@@ -79,12 +90,20 @@ data_sets: # --------------------------------------------------------
           pivot: .dev_id
           anchor: interfaces
 
+  - name: final_devices
+    from: merge
+    args:
+      sets:
+        - name: decorated_devices
+          pivot: .primary_ip4.address | split("/") | .[0]
+        - name: sessions
+          pivot: .id
 
   - name: full_site_info
     from: filtering
     args:
       name: site_info
-      filter: ".[0] | {bgp: {asn: .asn, physical_address: .physical_address}}"
+      filter: ".[0] | {local: {asn: .asn, physical_address: .physical_address}}"
 
 render: # --------------------------------------------------------
   elements:
@@ -93,6 +112,7 @@ render: # --------------------------------------------------------
         index:
           value: .name
         host_vars:
+          bgp: .bgp
           loopback: '{
             ipv4: .primary_ip4.address | split("/") | {address: .[0], netmask: .[1]},
             ipv6: .primary_ip6.address | split("/") | {address: .[0], netmask: .[1]},
