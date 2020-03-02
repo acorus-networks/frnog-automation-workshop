@@ -27,15 +27,11 @@
         packages:
         - python
         - python-pip 
-        # - python3-pip
         - libtool
         - m4
         - automake
         - autoconf
         - jq
-
-    # - name: upgrade pip
-    #   command: pip install --upgrade pip
 
     - name: install pip modules
       command: pip install junos-eznc jxmlease pyjq  
@@ -78,8 +74,21 @@
     - name: Compile module
       command: chdir=/home/vagrant/netbox-provisioning/yaani make install
 
+    - name: upgrade pip3
+      command: pip3 install --upgrade pip
+
+    - name: istall pyjq
+      command: sudo pip3 install pyjq
+
     - name: yaani env 
       command: export YAANI_CONFIG_FILE=$PWD/config_file.yml
+
+    - name: Restore permissions
+      file:
+        path: /home/vagrant/
+        recurse: yes
+        owner: vagrant
+        group: vagrant
 
     - name: Create vault id
       copy:
