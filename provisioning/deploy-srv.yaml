@@ -27,9 +27,24 @@
         packages:
         - python
         - python-pip 
+        - python3-pip
+        - libtool
+        - m4
+        - automake
+        - autoconf
+        - jq
+
+    - name: upgrade pip
+      command: pip install --upgrade pip
 
     - name: install pip modules
       command: pip install junos-eznc jxmlease    
+
+    - name: upgrade pip3
+      command: pip3 install --upgrade
+
+    - name: install pip3 modules
+      command: pip install pyjq
 
     - name: mkdir for juniper role
       command: mkdir -p /home/vagrant/.ansible/roles
@@ -53,6 +68,19 @@
         regexp: '^#host_key_checking = False'
         line: 'host_key_checking = False'
 
+    - git:
+      repo: https://github.com/a-delannoy/yaani.git
+      dest: /home/vagrant/netbox-provisioning
+
+    - name: install requirements yaani
+      command: chdir=/home/vagrant/netbox-provisioning/yaani pip3 install -r requirements.txt
+
+    - name: Compile module
+      command: chdir=/home/vagrant/netbox-provisioning/yaani make install
+
+    - name: yaani env 
+      command: export YAANI_CONFIG_FILE=$PWD/config_file.yml
+
     - name: Create vault id
       copy:
         dest: "/home/vagrant/.vault_pass.txt"
@@ -61,7 +89,6 @@
         mode: 0600
         content: |
           gN4PFTz5nmWWqpiYzmrcdSwHif6ePkYy7zwyhfkeFAQW9HwAVM3edKjDAmM5nKa
-
 
     - name: Create noc ssh config
       copy:
