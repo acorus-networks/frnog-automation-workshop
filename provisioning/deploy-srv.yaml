@@ -69,8 +69,8 @@
         line: 'host_key_checking = False'
 
     - git:
-      repo: https://github.com/a-delannoy/yaani.git
-      dest: /home/vagrant/netbox-provisioning
+       repo: https://github.com/a-delannoy/yaani.git
+       dest: /home/vagrant/netbox-provisioning
 
     - name: install requirements yaani
       command: chdir=/home/vagrant/netbox-provisioning/yaani pip3 install -r requirements.txt
