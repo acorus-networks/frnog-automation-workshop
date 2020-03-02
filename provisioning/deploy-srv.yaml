@@ -27,18 +27,18 @@
         packages:
         - python
         - python-pip 
-        - python3-pip
+        # - python3-pip
         - libtool
         - m4
         - automake
         - autoconf
         - jq
 
-    - name: upgrade pip
-      command: pip install --upgrade pip
+    # - name: upgrade pip
+    #   command: pip install --upgrade pip
 
     - name: install pip modules
-      command: pip install junos-eznc jxmlease    
+      command: pip install junos-eznc jxmlease pyjq  
 
     - name: upgrade pip3
       command: pip3 install --upgrade
@@ -70,7 +70,7 @@
 
     - git:
        repo: https://github.com/a-delannoy/yaani.git
-       dest: /home/vagrant/netbox-provisioning
+       dest: /home/vagrant/netbox-provisioning/yaani
 
     - name: install requirements yaani
       command: chdir=/home/vagrant/netbox-provisioning/yaani pip3 install -r requirements.txt
