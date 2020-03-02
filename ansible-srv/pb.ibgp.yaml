@@ -1,0 +1,5 @@
+---
+
+- import_playbook: ./vendor-playbooks/pb.juniper.ibgp.yaml
+
+- import_playbook: ./vendor-playbooks/pb.arista.ibgp.yaml

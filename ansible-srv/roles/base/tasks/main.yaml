@@ -1,20 +1,16 @@
 ---
 # tasks file for roles/base
 
-- name: Create host specific configuration directory
-  file: path=~/configs/{{ ansible_host }} state=directory
-
-- file: path=~/configs/{{ ansible_host }}/users.conf.part state=absent
-- file: path=~/configs/{{ ansible_host }}/{{ ansible_host }}.conf state=absent
-
 - name: Base Configuration - Juniper
   template:
     src={{ item }}.j2
     dest=~/configs/{{ ansible_host }}/{{ item }}.part
   tags:
     - base
-  when: "'juniper' in group_names"
+  when: 
+    - "'juniper' in group_names" 
   with_items:
+    - base-juniper.conf
     - users-juniper.conf
 
 - name: Base Configuration - Arista
@@ -23,6 +19,8 @@
     dest=~/configs/{{ ansible_host }}/{{ item }}.part
   tags:
     - base
-  when: "'arista' in group_names"
+  when: 
+    - "'arista' in group_names" 
   with_items:
+    - base-arista.conf
     - users-arista.conf

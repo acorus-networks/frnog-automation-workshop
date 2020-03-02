@@ -1,55 +1,45 @@
-#jinja2: lstrip_blocks: "True", trim_blocks: "True"
-
 {% if igp is defined %}
-{% if igp.loopbacks is defined %}
-{% for loopback in igp.loopbacks %}
-
-{% if loopback.ipv4 is defined %}
-
+{% if igp.loopback is defined %}
 !
-router ospf {% if loopback.vlan == 0 %}100{% else %}{{ loopback.vlan }}{% endif %}
-   router-id {{ loopback.ipv4.local_ip }}
-
-   {% if igp.neighbors is defined %}
-   {% for neighbor in igp.neighbors %}
-   {% if neighbor.vlans is defined %}
-   {% for vlan in neighbor.vlans %}
-
-
-
-   network {{ vlan.ipv4.local_ip }}/{{ vlan.ipv4.local_netmask }} area 0.0.0.0
-   {% endfor %}
+router ospf {{ my_asn }}
+    router-id {{ loopback.ipv4.local_ip }}
+    passive-interface default
 exit
 !
-
-
-{# Endif loopback.ipv4 is defined #}
+ipv6 router ospf {{ my_asn }}
+    router-id {{ loopback.ipv4.local_ip }}
+    passive-interface default
+exit
+!
+interface Loopback 0
+    ip ospf  
+    ipv6 ospf {{ my_asn }} area 0.0.0.0
+exit
+!
+{# if igp.loopback is defined #}
 {% endif %}
-
-{# Endfor loopback in igp.loopbacks #}
-{% endfor %}
-{# Endif igp.loopbacks is defined #}
-{% endif %}
-
-
 {% if igp.neighbors is defined %}
 {% for neighbor in igp.neighbors %}
-{% if neighbor.vlans is defined %}
-{% for vlan in neighbor.vlans %}
-
-
-
-{# Endfor vlan in neighbors.vlans #}
+!
+router ospf {{ my_asn }}
+    no passive-interface {{ neighbor.interface }}
+exit
+!
+ipv6 router ospf {{ my_asn }}
+    no passive-interface {{ neighbor.interface }}
+exit
+!
+interface {{ neighbor.interface }}
+    ip ospf network point-to-point
+    ip ospf area 0.0.0.0
+    ipv6 ospf network point-to-point
+    ipv6 ospf {{ my_asn }} area 0.0.0.0
+exit
+!
+{# for neighbor in igp.neighbors #}
 {% endfor %}
-{# Endif neighbors.vlans is defined #}
+{# if igp.neighbors is defined #}
 {% endif %}
-
-{# Endfor loopback in igp.loopbacks #}
-{% endfor %}
-{# Endif igp.loopbacks is defined #}
-{% endif %}
-
-
-{# Endif igp is defined #}
+{# if igp is defined #}
 {% endif %}
 

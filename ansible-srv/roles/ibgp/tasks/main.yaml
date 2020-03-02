@@ -1,6 +1,6 @@
 ---
 
-- name: IGP configuration - Juniper
+- name: iBGP configuration - Juniper
   template:
     src={{ item }}.j2
     dest=~/configs/{{ ansible_host }}/{{ ansible_loop.index }}_{{ item }}.part
@@ -9,12 +9,12 @@
   when: 
     - "'juniper' in group_names"  
   loop:
-    - interfaces-juniper.conf
-    - ospf-juniper.conf
+    - bgp-juniper.conf
+    - policies-juniper.conf
   loop_control:
     extended: yes
 
-- name: IGP configuration - Arista
+- name: iBGP configuration - Arista
   template:
     src={{ item }}.j2
     dest=~/configs/{{ ansible_host }}/{{ ansible_loop.index }}_{{ item }}.part
@@ -23,7 +23,6 @@
   when: 
     - "'arista' in group_names"  
   loop:
-    - interfaces-arista.conf
-    - ospf-arista.conf
+    - bgp-arista.conf
   loop_control:
     extended: yes

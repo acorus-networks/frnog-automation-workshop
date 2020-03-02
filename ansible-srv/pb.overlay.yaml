@@ -1,5 +1,0 @@
----
-
-- import_playbook: ./vendor-playbooks/pb.juniper.overlay.yaml
-
-- import_playbook: ./vendor-playbooks/pb.arista.overlay.yaml

@@ -1,6 +1,19 @@
 ---
 
+# Data to Yaani
 peers:
- - vqfx2
- - veos3
- - veos4
+  - vqfx2
+  - veos3
+  - veos4
+
+# Data from Yaani
+ibgp_peers:
+  - ipv4: 10.200.0.2
+    ipv6: fd00:1::2
+    name: vqfx2
+  - ipv4: 10.200.0.3
+    ipv6: fd00:1::3
+    name: veos3
+  - ipv4: 10.200.0.4
+    ipv6: fd00:1::4
+    name: veos4
