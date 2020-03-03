@@ -41,12 +41,6 @@
     - name: upgrade pip3
       command: pip3 install --upgrade pip
 
-    - name: install pip modules pyjq
-      command: pip install pyjq
-
-    - name: install pip modules jq
-      command: pip install jq
-
     - name: mkdir for juniper role
       command: mkdir -p /home/vagrant/.ansible/roles
 
@@ -73,16 +67,9 @@
        repo: https://github.com/a-delannoy/yaani.git
        dest: /home/vagrant/netbox-provisioning/yaani
 
-    - name: install requirements yaani
-      command: chdir=/home/vagrant/netbox-provisioning/yaani pip3 install -r requirements.txt
-      ignore_errors: yes
-
-    - name: Compile module
+    - name: Compile module/install requirements
       command: chdir=/home/vagrant/netbox-provisioning/yaani make install
       ignore_errors: yes
-
-    - name: install pyjq
-      command: sudo pip3 install pyjq
 
     - name: export var yaani
       lineinfile:
