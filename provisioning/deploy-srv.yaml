@@ -72,6 +72,7 @@
 
     - name: install requirements yaani
       command: chdir=/home/vagrant/netbox-provisioning/yaani pip3 install -r requirements.txt
+      ignore_errors: yes
 
     - name: Compile module
       command: chdir=/home/vagrant/netbox-provisioning/yaani make install
@@ -80,11 +81,10 @@
     - name: install pyjq
       command: sudo pip3 install pyjq
 
-    - name: add env var in bashrc
-      blockinfile:
+    - name: Add a line to a file if the file does not exist, without passing regexp
+      lineinfile:
         path: /home/vagrant/.bashrc
-        block: |
-          export YAANI_CONFIG_FILE=/home/vagrant/netbox-provisioning/config_file.yml
+        line: export YAANI_CONFIG_FILE=/home/vagrant/netbox-provisioning/config_file.yml
 
     - name: Restore permissions
       file:
