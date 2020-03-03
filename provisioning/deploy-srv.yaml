@@ -36,6 +36,9 @@
     - name: install pip modules
       command: pip install junos-eznc jxmlease pyjq  
 
+    - name: install pip3
+      command: sudo apt install python3-pip
+
     - name: upgrade pip3
       command: pip3 install --upgrade
 
