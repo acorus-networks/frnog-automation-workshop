@@ -180,12 +180,6 @@
           192.168.100.22  veos3
           192.168.100.23  veos4
 
-    - name: create symb link for roles
-      command: "ln -s /home/vagrant/roles/ /home/vagrant/vendor-playbooks/roles"
-
-    - name: create symb link for yanni
-      command: "ln -s /home/vagrant/netbox-provisioning/yaani/yaani/yaani.py /home/vagrant/yaani"
-
     - name: Restore permissions
       file:
         path: /home/vagrant/
@@ -193,6 +187,14 @@
         recurse: yes
         owner: vagrant
         group: vagrant
+
+    - name: create symb link for roles
+      command: "ln -s /home/vagrant/roles/ /home/vagrant/vendor-playbooks/roles"
+
+    - name: create symb link for yanni
+      command: "ln -s /home/vagrant/netbox-provisioning/yaani/yaani/yaani.py /home/vagrant/yaani"
+
+
 
 
 
