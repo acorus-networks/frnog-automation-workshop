@@ -9,7 +9,7 @@ data_sources: # --------------------------------------------------------
   Sessions:
     type: file
     args:
-      path: sessions.yaml
+      path: /home/vagrant/netbox-provisioning/sessions.yaml
       content_type: yaml
 
 data_sets: # --------------------------------------------------------
