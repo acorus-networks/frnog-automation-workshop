@@ -44,6 +44,9 @@
     - name: install pip modules pyjq
       command: pip install pyjq
 
+    - name: install pip modules jq
+      command: pip install jq
+
     - name: mkdir for juniper role
       command: mkdir -p /home/vagrant/.ansible/roles
 
