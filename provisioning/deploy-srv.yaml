@@ -81,17 +81,10 @@
     - name: install pyjq
       command: sudo pip3 install pyjq
 
-    - name: Add a line to a file if the file does not exist, without passing regexp
+    - name: export var yaani
       lineinfile:
         path: /home/vagrant/.bashrc
-        line: export YAANI_CONFIG_FILE=/home/vagrant/netbox-provisioning/config_file.yml
-
-    - name: Restore permissions
-      file:
-        path: /home/vagrant/
-        recurse: yes
-        owner: vagrant
-        group: vagrant
+        line: export YAANI_CONFIG_FILE=/home/vagrant/netbox-provisioning/config_file_2.yml
 
     - name: Create vault id
       copy:
@@ -189,4 +182,17 @@
 
     - name: create symb link for roles
       command: "ln -s /home/vagrant/roles/ /home/vagrant/vendor-playbooks/roles"
+
+    - name: create symb link for yanni
+      command: "ln -s /home/vagrant/netbox-provisioning/yaani/yaani/yaani.py /home/vagrant/yaani"
+
+    - name: Restore permissions
+      file:
+        path: /home/vagrant/
+        state: directory
+        recurse: yes
+        owner: vagrant
+        group: vagrant
+
+
 
