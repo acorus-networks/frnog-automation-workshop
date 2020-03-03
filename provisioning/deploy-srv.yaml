@@ -27,9 +27,22 @@
         packages:
         - python
         - python-pip 
+        - python3-pip         
+        - libtool
+        - m4
+        - automake
+        - autoconf
+        - jq
 
-    - name: install pip modules
-      command: pip install junos-eznc jxmlease    
+    - name: install pip modules junos
+      command: pip install junos-eznc jxmlease
+      ignore_errors: yes
+
+    - name: upgrade pip3
+      command: pip3 install --upgrade pip
+
+    - name: install pip modules pyjq
+      command: pip install pyjq
 
     - name: mkdir for juniper role
       command: mkdir -p /home/vagrant/.ansible/roles
@@ -53,6 +66,33 @@
         regexp: '^#host_key_checking = False'
         line: 'host_key_checking = False'
 
+    - git:
+       repo: https://github.com/a-delannoy/yaani.git
+       dest: /home/vagrant/netbox-provisioning/yaani
+
+    - name: install requirements yaani
+      command: chdir=/home/vagrant/netbox-provisioning/yaani pip3 install -r requirements.txt
+      ignore_errors: yes
+
+    - name: Compile module
+      command: chdir=/home/vagrant/netbox-provisioning/yaani make install
+      ignore_errors: yes
+
+    - name: install pyjq
+      command: sudo pip3 install pyjq
+
+    - name: Add a line to a file if the file does not exist, without passing regexp
+      lineinfile:
+        path: /home/vagrant/.bashrc
+        line: export YAANI_CONFIG_FILE=/home/vagrant/netbox-provisioning/config_file.yml
+
+    - name: Restore permissions
+      file:
+        path: /home/vagrant/
+        recurse: yes
+        owner: vagrant
+        group: vagrant
+
     - name: Create vault id
       copy:
         dest: "/home/vagrant/.vault_pass.txt"
@@ -61,7 +101,6 @@
         mode: 0600
         content: |
           gN4PFTz5nmWWqpiYzmrcdSwHif6ePkYy7zwyhfkeFAQW9HwAVM3edKjDAmM5nKa
-
 
     - name: Create noc ssh config
       copy:
