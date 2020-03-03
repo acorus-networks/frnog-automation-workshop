@@ -34,15 +34,15 @@
         - autoconf
         - jq
 
-    - name: install pip modules
-      command: pip install junos-eznc jxmlease pyjq  
+    - name: install pip modules junos
+      command: pip install junos-eznc jxmlease
+      ignore_errors: yes
 
     - name: upgrade pip3
-      command: pip3 install --upgrade
+      command: pip3 install --upgrade pip
 
-    - name: install pip3 modules
+    - name: install pip modules pyjq
       command: pip install pyjq
-      ignore_errors: yes
 
     - name: mkdir for juniper role
       command: mkdir -p /home/vagrant/.ansible/roles
@@ -75,15 +75,16 @@
 
     - name: Compile module
       command: chdir=/home/vagrant/netbox-provisioning/yaani make install
+      ignore_errors: yes
 
-    - name: upgrade pip3
-      command: pip3 install --upgrade pip
-
-    - name: istall pyjq
+    - name: install pyjq
       command: sudo pip3 install pyjq
 
-    - name: yaani env 
-      command: export YAANI_CONFIG_FILE=$PWD/config_file.yml
+    - name: add env var in bashrc
+      blockinfile:
+        path: /home/vagrant/.bashrc
+        block: |
+          export YAANI_CONFIG_FILE=/home/vagrant/netbox-provisioning/config_file.yml
 
     - name: Restore permissions
       file:

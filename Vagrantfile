@@ -199,7 +199,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ### SRV : 
     ###########
     config.vm.define "srv" do |srv|
-        srv.vm.box = "bento/ubuntu-16.04"
+        srv.vm.box = "ubuntu/bionic64"
         srv.vm.hostname = "server"
         srv.vm.network 'private_network', ip: "192.168.100.10", virtualbox__intnet: "#{UUID}_seg5"
         srv.vm.boot_timeout = 240
