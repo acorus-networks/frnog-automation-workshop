@@ -3,8 +3,13 @@
 - name: Check if directory config is present
   file: path=~/configs state=directory
 
+
 - name: Clean device config path
   file:
-    state: absent
-    path: ~/configs/{{ ansible_host }}
-    
+    state: "{{ item }}"
+    path: "~/configs/{{ ansible_host }}"
+    owner: vagrant
+    group: vagrant
+  with_items:
+    - absent
+    - directory
