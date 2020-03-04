@@ -41,9 +41,6 @@
     - name: upgrade pip3
       command: pip3 install --upgrade pip
 
-    - name: install pip modules pyjq
-      command: pip install pyjq
-
     - name: mkdir for juniper role
       command: mkdir -p /home/vagrant/.ansible/roles
 
@@ -70,28 +67,14 @@
        repo: https://github.com/a-delannoy/yaani.git
        dest: /home/vagrant/netbox-provisioning/yaani
 
-    - name: install requirements yaani
-      command: chdir=/home/vagrant/netbox-provisioning/yaani pip3 install -r requirements.txt
-      ignore_errors: yes
-
-    - name: Compile module
+    - name: Compile module/install requirements
       command: chdir=/home/vagrant/netbox-provisioning/yaani make install
       ignore_errors: yes
 
-    - name: install pyjq
-      command: sudo pip3 install pyjq
-
-    - name: Add a line to a file if the file does not exist, without passing regexp
+    - name: export var yaani
       lineinfile:
         path: /home/vagrant/.bashrc
-        line: export YAANI_CONFIG_FILE=/home/vagrant/netbox-provisioning/config_file.yml
-
-    - name: Restore permissions
-      file:
-        path: /home/vagrant/
-        recurse: yes
-        owner: vagrant
-        group: vagrant
+        line: export YAANI_CONFIG_FILE=/home/vagrant/netbox-provisioning/config_file_2.yml
 
     - name: Create vault id
       copy:
@@ -187,6 +170,21 @@
           192.168.100.22  veos3
           192.168.100.23  veos4
 
+    - name: Restore permissions
+      file:
+        path: /home/vagrant/
+        state: directory
+        recurse: yes
+        owner: vagrant
+        group: vagrant
+
     - name: create symb link for roles
       command: "ln -s /home/vagrant/roles/ /home/vagrant/vendor-playbooks/roles"
+
+    - name: create symb link for yanni
+      command: "ln -s /home/vagrant/netbox-provisioning/yaani/yaani/yaani.py /home/vagrant/yaani"
+
+
+
+
 
