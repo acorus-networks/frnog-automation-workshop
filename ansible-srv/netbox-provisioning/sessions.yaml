@@ -2,15 +2,15 @@
   peer_ip: 10.2.99.0
 - local_ip: 10.2.99.3
   peer_ip: 10.2.99.2
-- local_ip: fc00:2::99:1
-  peer_ip: fc00:2::99:0
-- local_ip: fc00:2::99:3
-  peer_ip: fc00:2::99:2
+- local_ip: fdaa:2::1
+  peer_ip: fdaa:2::0
+- local_ip: fdaa:2::3
+  peer_ip: fdaa:2::2
 - local_ip: 10.2.99.5
   peer_ip: 10.2.99.4
 - local_ip: 10.2.99.7
   peer_ip: 10.2.99.6
-- local_ip: fc00:2::99:5
-  peer_ip: fc00:2::99:4
-- local_ip: fc00:2::99:7
-  peer_ip: fc00:2::99:6
+- local_ip: fdaa:2::5
+  peer_ip: fdaa:2::4
+- local_ip: fdaa:2::7
+  peer_ip: fdaa:2::6
