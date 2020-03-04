@@ -93,21 +93,21 @@ class POD_SPECS:
                 "tags": ["router", "border-router"],
                 "interfaces": [
                     {
-                        "name": "et1",
+                        "name": "Ethernet1",
                         "id": 7
                     },
                     {
-                        "name": "et2",
+                        "name": "Ethernet2",
                         "id": 8
                     },
                     {
-                        "name": "et3",
+                        "name": "Ethernet3",
                         "id": 9,
                         "tags": ["transit", 'cloud-temple'],
                         "provider": 1
                     },
                     {
-                        "name": "et4",
+                        "name": "Ethernet4",
                         "id": 10,
                         "tags": ["transit", 'cloud-temple'],
                         "provider": 1
@@ -122,11 +122,11 @@ class POD_SPECS:
                 "tags": ["router"],
                 "interfaces": [
                     {
-                        "name": "et1",
+                        "name": "Ethernet1",
                         "id": 11
                     },
                     {
-                        "name": "et2",
+                        "name": "Ethernet2",
                         "id": 12
                     },
                 ]
@@ -286,12 +286,6 @@ def make_pod(pod_id, api_connector):
             tags=dev['tags']
         )
 
-        mgmt = api_connector.dcim.interfaces.create(
-            name="mgmt",
-            device=device.id,
-            type=0
-        )
-
         # Setup loopback interface
         interface = api_connector.dcim.interfaces.create(
             name=dev["loopback"],
@@ -299,11 +293,6 @@ def make_pod(pod_id, api_connector):
             type=0
         )
 
-        # Attach IP to loopback
-        mgmt_ip = api_connector.ipam.ip_addresses.create(
-            address=dev["mgmt"],
-            interface=mgmt.id
-        )
         # Attach IP to loopback
         ipv4 = api_connector.ipam.ip_addresses.create(
             address=SPEC.LOOPBACKv4.format(pod_id=pod_id, rtr_id=dev['id']),
@@ -403,14 +392,14 @@ def main():
         )
         api_connector.ipam.ip_addresses.create(
             address=(
-                "{}/32"
+                "{}/31"
                 .format(str(list(ipaddress.ip_network(subnet))[1]))
             ),
             interface=pods_refs["interfaces"][uplink["interface"]].id,
         )
         api_connector.ipam.ip_addresses.create(
             address=(
-                "{}/32"
+                "{}/31"
                 .format(str(list(ipaddress.ip_network(subnet))[0]))
             ),
             tags=uplink["tags"]
