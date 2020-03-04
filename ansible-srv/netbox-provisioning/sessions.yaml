@@ -1,24 +1,16 @@
-- id: 10.2.200.1
-  bgp:
-    ipv4:
-      - peer_ip: 10.2.99.0
-        peer_asn: 35280
-      - peer_ip: 10.2.99.2
-        peer_asn: 35280
-    ipv6:
-      - peer_ip: fc00:2::99:0
-        peer_asn: 35280
-      - peer_ip: fc00:2::99:2
-        peer_asn: 35280
-- id: 10.2.200.3
-  bgp:
-    ipv4:
-      - peer_ip: 10.2.99.4
-        peer_asn: 33930
-      - peer_ip: 10.2.99.6
-        peer_asn: 33930
-    ipv6:
-      - peer_ip: fc00:2::99:4
-        peer_asn: 33930
-      - peer_ip: fc00:2::99:6
-        peer_asn: 33930
+- local_ip: 10.2.99.1
+  peer_ip: 10.2.99.0
+- local_ip: 10.2.99.3
+  peer_ip: 10.2.99.2
+- local_ip: fc00:2::99:1
+  peer_ip: fc00:2::99:0
+- local_ip: fc00:2::99:3
+  peer_ip: fc00:2::99:2
+- local_ip: 10.2.99.5
+  peer_ip: 10.2.99.4
+- local_ip: 10.2.99.7
+  peer_ip: 10.2.99.6
+- local_ip: fc00:2::99:5
+  peer_ip: fc00:2::99:4
+- local_ip: fc00:2::99:7
+  peer_ip: fc00:2::99:6
