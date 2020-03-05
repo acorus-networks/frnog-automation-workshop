@@ -6,19 +6,7 @@ data_sources: # --------------------------------------------------------
       url: http://ks01.commit.ninja:32776/
       token: 0123456789abcdef0123456789abcdef01234567
 
-  Sessions:
-    type: file
-    args:
-      path: /home/vagrant/netbox-provisioning/sessions.yaml
-      content_type: yaml
-
 data_sets: # --------------------------------------------------------
-  - name: peers
-    from: source
-    args:
-      name: Sessions
-      filter: .[]
-
   - name: providers
     from: source
     args:
@@ -75,15 +63,6 @@ data_sets: # --------------------------------------------------------
       app: ipam
       type: ip-addresses
 
-  - name: full_ips
-    from: merge
-    args:
-      sets:
-        - name: peers
-          pivot: .local_ip
-        - name: nb_ips
-          pivot: .address | split("/") | .[0]
-
   - name: full_interfaces
     from: decoration
     args:
@@ -94,7 +73,7 @@ data_sets: # --------------------------------------------------------
         - name: final_circuits
           pivot: .termination_a.connected_endpoint.id
           anchor: circuits
-        - name: full_ips
+        - name: nb_ips
           pivot: .interface.id
           anchor: ip
 
@@ -114,13 +93,6 @@ data_sets: # --------------------------------------------------------
     args:
       name: decorated_devices
       filter: '[. as $all | .[] | setpath(["all_peers"]; $all)]'
-
-  # - name: final_devices
-  #   from: merge
-  #   args:
-  #     sets:
-  #       - name: full_devices
-  #         pivot: .primary_ip4.address | split("/") | .[0]
 
   - name: full_site_info
     from: filtering
@@ -165,12 +137,12 @@ render: # --------------------------------------------------------
               ipv4: [.ip[] | select(.family.value == 4) ][0] | {
                 local_ip: .address | split("/") | .[0],
                 netmask: .address | split("/") | .[1],
-                peer_ip: .peer_ip
+                peer_ip: null
               },
               ipv6: [.ip[] | select(.family.value == 6) ][0] | {
                 local_ip: .address | split("/") | .[0],
                 netmask: .address | split("/") | .[1],
-                peer_ip: .peer_ip
+                peer_ip: null
               }
             }
           ]'
@@ -179,10 +151,14 @@ render: # --------------------------------------------------------
               name: .circuits[0].provider[0].name,
               peer_asn: .circuits[0].provider[0].asn,
               ipv4: [.ip[] | select(.family.value == 4) ][0] | {
-                peer_ip: .peer_ip
+                local_ip: .address | split("/") | .[0],
+                netmask: .address | split("/") | .[1],
+                peer_ip: null
               },
               ipv6: [.ip[] | select(.family.value == 6) ][0] | {
-                peer_ip: .peer_ip
+                local_ip: .address | split("/") | .[0],
+                netmask: .address | split("/") | .[1],
+                peer_ip: null
               }
             }
           ]'
@@ -193,3 +169,7 @@ render: # --------------------------------------------------------
     final_devices:
       arista:
       juniper:
+
+transform:
+  - module: peer_enrichment
+    func: add_peer_ip
