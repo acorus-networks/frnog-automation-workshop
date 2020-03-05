@@ -71,10 +71,15 @@
       command: chdir=/home/vagrant/netbox-provisioning/yaani make install
       ignore_errors: yes
 
-    - name: export var yaani
+    - name: export var yaani config
       lineinfile:
         path: /home/vagrant/.bashrc
         line: export YAANI_CONFIG_FILE=/home/vagrant/netbox-provisioning/config_file.yml
+
+    - name: export var yaani peer script
+      lineinfile:
+        path: /home/vagrant/.bashrc
+        line: export YAANI_MODULES_PATH=/home/vagrant/netbox-provisioning/peer_enrichment.py
 
     - name: Create vault id
       copy:
