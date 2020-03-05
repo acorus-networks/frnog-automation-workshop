@@ -74,7 +74,7 @@
     - name: export var yaani
       lineinfile:
         path: /home/vagrant/.bashrc
-        line: export YAANI_CONFIG_FILE=/home/vagrant/netbox-provisioning/config_file_2.yml
+        line: export YAANI_CONFIG_FILE=/home/vagrant/netbox-provisioning/config_file.yml
 
     - name: Create vault id
       copy:
