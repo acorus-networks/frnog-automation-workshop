@@ -1,0 +1,5 @@
+---
+# defaults files :
+dhcp_config: /etc/dhcp/sites/{{ site }}/network/dhcpd-juniper-leaves.conf
+dhcp_switch_config_path: /etc/dhcp/sites/{{ site }}/network/juniper-leaves
+switch_config_path_remote: /srv/ftp/juniper

@@ -1,0 +1,46 @@
+{% set ip = ansible_host + "/21" %}
+{% set gateway = ip | ipaddr('-2') %}
+{% set gateway_ip = gateway | ipaddr('address') %}
+system {
+    host-name {{ inventory_hostname_short }}.{{ site }};
+    services {
+        ssh;
+        netconf {
+            ssh;
+        }
+    }
+    root-authentication {
+        encrypted-password "$1$DzfXDa3b$tTV/GYSi7muvkq5SXfWgb.";
+    }
+    login {
+        user noc {
+            full-name "Noc account, used by ansible";
+            uid 2001;
+            class super-user;
+            authentication {
+                ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDWY1DJKRluAzYeIeeRwMxUj+PELCOw9hPnWggoPMeCOgBo/fDA1ZdSbOMUS3y4Nj45I9AEXMLP3ADdylsbVm9BOVUP+rDJU4rfZn/MabZ2gOgrQBJ7R/dJTQ5qZq9RA3MK1w3U9R7tW71R/tZpJ960TsWNLyacxzOoE2IZEE+qe9lnlP730VFJNbKoLwwkpd4Anl/nbqQBZY6sIkAbxlyzMKhDwryM5Pun1nGCBbOLjQMxzxIibDPIyPS5/+8II5Dk5ydnRLSiGlDccOE1VazdPFB2f+GgI3tLKZ/K8GkoSo4Nhqx4Pk8NJYmKgOtmSwLcYER886h+Y7h6bC5BOjTR noc@server"; ## SECRET-DATA
+            }
+        }
+    }
+}
+interfaces {
+    em0 {
+        unit 0 {
+            family inet {
+                address {{ ansible_host }}/21;
+            }
+        }
+    }
+}
+snmp {
+    location "{{ location }}";
+    community {{ network.snmp.community }} {
+        authorization read-only;
+    }
+}
+routing-options {
+    static {
+        route {{ oob_route1 }} next-hop {{ gateway_ip }};
+        route {{ oob_route2 }} next-hop {{ gateway_ip }};
+    }
+}

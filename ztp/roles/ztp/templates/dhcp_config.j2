@@ -1,0 +1,7 @@
+host {{ inventory_hostname_short }}.{{ site }} {
+    hardware ethernet {{ mac }};
+    fixed-address {{ ansible_host }};
+    option NEW_OP.image-file-name "{{ junos_release }}";
+    option NEW_OP.transfer-mode "ftp";
+    option NEW_OP.config-file-name "juniper/{{ inventory_hostname }}.conf";
+}
