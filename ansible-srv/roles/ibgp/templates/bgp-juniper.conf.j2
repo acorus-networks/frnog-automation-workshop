@@ -12,7 +12,9 @@ protocols {
       export ipv4-ibgp-out;
       {% for peer in ibgp_peers %}
       {% if peer.ipv4 is defined %}
-      neighbor {{ peer.ipv4.peer_ip }};
+      neighbor {{ peer.ipv4 }} {
+        description "{{ peer.name }}";
+      }
       {% endif %}
       {% endfor %}
     }
@@ -32,7 +34,9 @@ protocols {
       export ipv6-ibgp-out;
       {% for peer in ibgp_peers %}
       {% if peer.ipv6 is defined %}
-      neighbor {{ peer.ipv6.peer_ip }};
+      neighbor {{ peer.ipv6 }} {
+        description "{{ peer.name }}";
+      }
       {% endif %}
       {% endfor %}
     }

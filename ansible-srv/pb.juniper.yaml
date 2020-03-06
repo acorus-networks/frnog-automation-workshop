@@ -1,0 +1,42 @@
+---
+
+- name: CleanUp
+  hosts: juniper
+  connection: local
+  tags:
+    - always
+  gather_facts: no
+  tasks:
+    - name: Remove if exist the temporary configuration directory
+      file: path=/{{ config_dir }}/{{ ansible_host }} state=absent
+    - name: Remove if exist the configuration file
+      file: path=/{{ config_dir }}/{{ ansible_host }}.conf state=absent
+    - name: Create the configuration directory
+      file: path=/{{ config_dir }}/{{ ansible_host }} state=directory
+
+- name: Config 
+  hosts: juniper
+  connection: network_cli
+  gather_facts: no
+  roles:
+    # Juniper role for Ansible 
+    - Juniper.junos
+    # Basic configuration
+    - base
+    # IGP
+    - igp
+    # IBGP
+    - ibgp
+    # Transit configuration
+    - transit
+
+- name: Enhance configuration
+  hosts: juniper
+  connection: local
+  tags:
+    - always
+  gather_facts: no
+  tasks:
+    - name: Assembling configurations and copying to conf
+      assemble: src={{ config_dir }}/{{ ansible_host }}/ dest=/{{ config_dir }}/{{ ansible_host }}.conf
+

@@ -1,5 +1,19 @@
-
 !
-# Enable IPv6
+hostname {{ ansible_host }}
+!
+aaa authorization exec default local
+!
+aaa root secret sha512 $6$g.z605GCuD.ll14n$AciElSlCG0MCxOR6s.Kzccet3Gr5gJFYCg9FeylUkCxX2NQT.Pql.7BgxtE7Kxq.CRAKf03S9XTY50z9tqFqg0
+!
+username admin privilege 15 role network-admin secret sha512 $6$zoC1l3yX2yMSgYTf$/qfos1z5SopWtNWis6vm3DLMrTsCyaR4ZYlvs8P1RPWhRCldDOB9xSsXGBAyjYBBlldjhsMPODUaHcpfDsddL0
+username vagrant privilege 15 role network-admin secret sha512 $6$5mtgSqlRucxrYYed$CBG6ab/96TcCC7fe2VcHiudwG3Bo8ASMbhD1BqS.ZuzNOmjRhCY4oPcTdDgClotOhOOqy4MsfF9WezzPHzKdU/
+!
+! Enable API
+management api http-commands
+!
+! Enable IPv4 routing
+ip routing
+!
+! Enable IPv6 routing
 ipv6 unicast-routing
 !

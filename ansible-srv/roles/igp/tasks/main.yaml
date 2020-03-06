@@ -3,9 +3,9 @@
 - name: IGP configuration - Juniper
   template:
     src={{ item }}.j2
-    dest=~/configs/{{ ansible_host }}/{{ ansible_loop.index }}_{{ item }}.part
+    dest={{ config_dir }}/{{ ansible_host }}/1_{{ ansible_loop.index }}_{{ item }}.part
   tags:
-    - ibgp
+    - igp
   when: 
     - "'juniper' in group_names"  
   loop:
@@ -17,9 +17,9 @@
 - name: IGP configuration - Arista
   template:
     src={{ item }}.j2
-    dest=~/configs/{{ ansible_host }}/{{ ansible_loop.index }}_{{ item }}.part
+    dest={{ config_dir }}/{{ ansible_host }}/1_{{ ansible_loop.index }}_{{ item }}.part
   tags:
-    - ibgp
+    - igp
   when: 
     - "'arista' in group_names"  
   loop:

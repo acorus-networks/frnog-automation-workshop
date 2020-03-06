@@ -3,7 +3,7 @@
 - name: Transit configuration - Juniper
   template:
     src={{ item }}.j2
-    dest=~/configs/{{ ansible_host }}/{{ ansible_loop.index }}_{{ item }}.part
+    dest={{ config_dir }}/{{ ansible_host }}/3_{{ ansible_loop.index }}_{{ item }}.part
   tags:
     - transit
   when: 
@@ -18,7 +18,7 @@
 - name: Transit configuration - Arista
   template:
     src={{ item }}.j2
-    dest=~/configs/{{ ansible_host }}/{{ ansible_loop.index }}_{{ item }}.part
+    dest={{ config_dir }}/{{ ansible_host }}/3_{{ ansible_loop.index }}_{{ item }}.part
   tags:
     - transit
   when: 

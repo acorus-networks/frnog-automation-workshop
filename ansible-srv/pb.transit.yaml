@@ -1,5 +1,15 @@
 ---
 
-- import_playbook: ./vendor-playbooks/pb.juniper.transit.yaml
+- import_playbook: pb.juniper.yaml
+  tags:
+    - base
+    - igp
+    - ibgp
+    - transit
 
-- import_playbook: ./vendor-playbooks/pb.arista.transit.yaml
+- import_playbook: pb.arista.yaml
+  tags:
+    - base
+    - igp
+    - ibgp
+    - transit

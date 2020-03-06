@@ -1,5 +1,11 @@
 ---
 
-- import_playbook: ./vendor-playbooks/pb.juniper.igp.yaml
+- import_playbook: pb.juniper.yaml
+  tags:
+    - base
+    - igp
 
-- import_playbook: ./vendor-playbooks/pb.arista.igp.yaml
+- import_playbook: pb.arista.yaml
+  tags:
+    - base
+    - igp
