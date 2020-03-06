@@ -54,5 +54,13 @@ interfaces {
       }
     }
   }
+  /* Don't touch - use for management */
+  xe-0/0/4 {
+    unit 0 {
+      family inet {
+        address {{ management_ip[inventory_hostname] }}/24;
+      }
+    }
+  }
 }
 

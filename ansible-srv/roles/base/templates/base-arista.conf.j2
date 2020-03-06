@@ -17,3 +17,8 @@ ip routing
 ! Enable IPv6 routing
 ipv6 unicast-routing
 !
+! Management interface dont touch
+interface Ethernet5
+   no switchport
+   ip address {{ management_ip[inventory_hostname] }}/24
+!
