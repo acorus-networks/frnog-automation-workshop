@@ -71,7 +71,7 @@ Pay attention to your POD ID and POD IP, we'll use them during the workshop to a
                             |------- |   vqfx2   |                               |   veos4   |
                                      |           | ----|                   |---- |           |
                                      =============     |                   |     =============
-                                         em1|          | xe-0/0/4          | Ethernet3 
+                                         em1|          | xe-0/0/4          | Ethernet5 
                                      =============     |                   |
                                      | vqfx-pfe2 |     |                   | 
                                      =============     |                   |
