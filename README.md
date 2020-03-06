@@ -179,13 +179,13 @@ Exit the vqfx1 now.
 Let's try with Ansible now, well test Netconf connectivity towards Juniper routers :
 
 ```
-vagrant@server:~$ ansible-playbook -i inventories/hosts pb.test.netconf.yaml --limit juniper --vault-id ~/.vault_pass.txt
+vagrant@server:~$ ansible-playbook -i inventories/hosts pb.test.netconf.yaml --limit juniper
 ```
 
 OUTPUT
 
 ```
-vagrant@server:~$ ansible-playbook -i inventories/hosts pb.test.netconf.yaml --limit juniper --vault-id ~/.vault_pass.txt
+vagrant@server:~$ ansible-playbook -i inventories/hosts pb.test.netconf.yaml --limit juniper 
 
 PLAY [Compare  Junos OS] ***************************************************************************************************************************************************************************************************
 
@@ -221,13 +221,13 @@ vqfx2                      : ok=4    changed=0    unreachable=0    failed=0    s
 We'll try to get some infos now from our Arista routers :
 
 ```
-vagrant@server:~$ ansible-playbook -i inventories/hosts pb.test.veos.yaml --limit arista --vault-id ~/.vault_pass.txt
+vagrant@server:~$ ansible-playbook -i inventories/hosts pb.test.veos.yaml --limit arista 
 ```
 
 OUTPUT
 
 ```
-vagrant@server:~$ ansible-playbook -i inventories/hosts pb.test.veos.yaml --limit arista --vault-id ~/.vault_pass.txt
+vagrant@server:~$ ansible-playbook -i inventories/hosts pb.test.veos.yaml --limit arista 
 
 PLAY [Run commands on remote Arista devices] *******************************************************************************************************************************************************************************
 
@@ -333,7 +333,7 @@ Append to the file :
 #### Push the configuration to all devices
 
 ```
-vagrant@server$ ansible-playbook -i inventories/hosts pb.juniper.users.yaml --vault-id ~/.vault_pass.txt
+vagrant@server$ ansible-playbook -i inventories/hosts pb.juniper.users.yaml 
 ```
 
 OUTPUT
@@ -474,7 +474,7 @@ Check content of ```~/roles/igp/templates/*.yaml```
 The playbook below will configure interfaces, loopbacks & OSPF.
 
 ```
-ansible-playbook -i inventories/hosts pb.juniper.igp.yaml --vault-id ~/.vault_pass.txt
+ansible-playbook -i inventories/hosts pb.juniper.igp.yaml 
 ```
 
 New setup :
@@ -505,13 +505,13 @@ Instance: master
 Now we'll run a playbook to ping all our directly connected neighbors and their loopbacks, igp.yaml file will used to get ips of peers.
 
 ```
-ansible-playbook -i inventories/hosts pb.juniper.ping.yaml --vault-id ~/.vault_pass.txt
+ansible-playbook -i inventories/hosts pb.juniper.ping.yaml 
 
 ```
 OUTPUT
 
 ```
-vagrant@server:~$ ansible-playbook -i inventories/hosts pb.juniper.ping.yaml --vault-id ~/.vault_pass.txt
+vagrant@server:~$ ansible-playbook -i inventories/hosts pb.juniper.ping.yaml 
 
 PLAY [Ping devices] *********************************************************************************************************************
 
@@ -572,13 +572,13 @@ vagrant@vqfx1# commit
 Re-run the test playbook and check that all loopbacks are still reacheable from all devices :
 
 ```
-ansible-playbook -i inventories/hosts pb.juniper.ping.yaml --vault-id ~/.vault_pass.txt
+ansible-playbook -i inventories/hosts pb.juniper.ping.yaml 
 
 ```
 OUTPUT
 
 ```
-vagrant@server:~$ ansible-playbook -i inventories/hosts pb.juniper.ping.yaml --vault-id ~/.vault_pass.txt
+vagrant@server:~$ ansible-playbook -i inventories/hosts pb.juniper.ping.yaml 
 
 PLAY [Ping devices] *********************************************************************************************************************
 
@@ -672,13 +672,13 @@ BGP is not running
 Template is already created, check it then apply it.
 
 ```
-vagrant@server$ ansible-playbook -i inventories/hosts pb.juniper.bgp.yaml --vault-id ~/.vault_pass.txt
+vagrant@server$ ansible-playbook -i inventories/hosts pb.juniper.bgp.yaml 
 ```
 
 OUTPUT
 
 ```
-vagrant@server:~$ ansible-playbook -i inventories/hosts pb.juniper.bgp.yaml --vault-id ~/.vault_pass.txt
+vagrant@server:~$ ansible-playbook -i inventories/hosts pb.juniper.bgp.yaml 
 
 PLAY [Config BGP of Juniper devices] ****************************************************************************************************
 
@@ -761,7 +761,7 @@ Your playbook should give the below output :
 OUTPUT
 
 ```
-vagrant@server:~$ ansible-playbook -i inventories/hosts pb.juniper.check-bgp.yaml --vault-id ~/.vault_pass.txt
+vagrant@server:~$ ansible-playbook -i inventories/hosts pb.juniper.check-bgp.yaml 
 
 PLAY [Check BGP] ****************************************************************************************************************************************************
 
