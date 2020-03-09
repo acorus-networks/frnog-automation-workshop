@@ -1,0 +1,26 @@
+---
+- name: Manipulate the configuration of Junos devices
+  hosts: all
+  connection: local
+  gather_facts: no
+
+  vars:
+    credentials:
+      host: "{{ ansible_host }}"
+      username: "{{ ssh_login }}"
+      password: "{{ ssh_pass }}"
+
+  roles:
+    - Juniper.junos
+  tasks:
+    - name: Confirm the previous commit confirmed with a commit
+      juniper_junos_config:
+        check: true
+        diff: false
+        commit: true
+        provider: "{{ credentials }}"
+      register: response
+
+    - name: Print the complete response
+      debug:
+        var: response

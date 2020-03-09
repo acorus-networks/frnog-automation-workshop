@@ -1,19 +1,19 @@
 {% if ibgp_peers is defined %}
 
-policy-statement ipv4-ibgp-in {
-  then accept;
+policy-options {
+    policy-statement ipv4-ibgp-in {
+        then accept;
+    }
+    policy-statement ipv4-ibgp-out {
+        then accept;
+    }
+    policy-statement ipv6-ibgp-in {
+        then accept;
+    }
+    policy-statement ipv6-ibgp-out {
+        then accept;
+    }
 }
-policy-statement ipv4-ibgp-out {
-  then accept;
-}
-
-policy-statement ipv6-ibgp-in {
-  then accept;
-}
-policy-statement ipv6-ibgp-out {
-  then accept;
-}
-
 {# if ibgp_peers is defined #}
 {% endif %}
 

@@ -1,0 +1,70 @@
+---
+
+- name: CleanUp
+  hosts: all
+  connection: local
+  tags:
+    - always
+  gather_facts: no
+  tasks:
+    - name: Remove if exist the temporary configuration directory
+      file: path={{ config_dir }}/{{ ansible_host }} state=absent
+    - name: Remove if exist the configuration file
+      file: path={{ config_dir }}/{{ ansible_host }}.conf state=absent
+    - name: Create the configuration directory
+      file: path={{ config_dir }}/{{ ansible_host }} state=directory
+
+- name: Config 
+  hosts: all
+  connection: network_cli
+  gather_facts: no
+  roles:
+    # Juniper role for Ansible 
+    - Juniper.junos
+    # Basic configuration
+    - base
+    # IGP
+    - igp
+    # IBGP
+    - ibgp
+    # Transit configuration
+    - transit
+
+- name: Enhance configuration
+  hosts: all
+  connection: local
+  tags:
+    - always
+  gather_facts: no
+  tasks:
+    - name: Assembling configurations and copying to conf
+      assemble: src={{ config_dir }}/{{ ansible_host }}/ dest={{ config_dir }}/{{ ansible_host }}.conf
+
+- name: Connection to Arista devices
+  hosts: arista
+  connection: local
+  tags:
+    - always
+  gather_facts: no
+  tasks:
+    - name: Pushing config ... please wait ...
+      eos_config:
+        src: "{{ config_dir }}/{{ ansible_host }}/{{ inventory_hostname }}.conf"
+        save_when: changed
+      diff: true
+      register: diff_results
+
+- name: Connection to Arista devices
+  hosts: juniper
+  connection: local
+  tags:
+    - always
+  gather_facts: no
+  tasks:
+    - name: Pushing config ... please wait ...
+      juniper_junos_config:
+        config_mode: 'private'
+        src: "{{ config_dir }}/{{ ansible_host }}/{{ inventory_hostname }}.conf"
+        load: replace
+        ignore_warning: true
+      register: response

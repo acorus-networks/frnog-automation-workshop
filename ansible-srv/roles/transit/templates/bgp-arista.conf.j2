@@ -1,41 +1,34 @@
 {% if transit_sessions is defined %}
-
+!
 router bgp {{ my_asn }}
-  ! ecmp sur 4 path max (par defaut pas d’ecmp)
-  maximum-paths 4
-  ! par d’annonce si pas de route-map / prefix list
-  bgp missing-policy address-family all direction out action deny
-  bgp missing-policy address-family all direction in action deny
-  ! ne pas activer le neighbor si s’il n’est pas "activate” explicitement
-  no bgp default ipv4-unicast
-  ! desactiver le add-path par defaut 
-  no bgp additional-paths receive
-  no bgp additional-paths send
-  ! si on a des AS_PATH de meme longueur mais différents : ne pas faire d’ECMP (et continuer le Best path selection algorithme)
-  no bgp bestpath as-path multipath-relax
   address-family ipv4
     neighbor IPV4-BPG-TRANSIT activate
   address-family ipv6
     neighbor IPV6-BPG-TRANSIT activate
+  exit
 !
 {% for session in transit_sessions %}
 {% if session.ipv4 is defined %}
+!
 router bgp {{ my_asn }}
   neighbor {{ session.ipv4.peer_ip }} peer-group IPV4-BPG-TRANSIT
   neighbor {{ session.ipv4.peer_ip }} remote-as {{ session.peer_asn }}
   neighbor {{ session.ipv4.peer_ip }} description {{ session.name }}
   neighbor {{ session.ipv4.peer_ip }} route-map IPV4-AS{{ session.peer_asn }}-IN in
   neighbor {{ session.ipv4.peer_ip }} route-map IPV4-AS{{ session.peer_asn }}-OUT out
+  exit
 !
 {# if session.ipv4 is defined #}
 {% endif %}
 {% if session.ipv6 is defined %}
+!
 router bgp {{ my_asn }}
   neighbor {{ session.ipv6.peer_ip }} peer-group IPV6-BPG-TRANSIT
   neighbor {{ session.ipv6.peer_ip }} remote-as {{ session.peer_asn }}
   neighbor {{ session.ipv6.peer_ip }} description {{ session.name }}
   neighbor {{ session.ipv6.peer_ip }} route-map IPV6-AS{{ session.peer_asn }}-IN in
   neighbor {{ session.ipv6.peer_ip }} route-map IPV6-AS{{ session.peer_asn }}-OUT out
+  exit
 !
 
 

@@ -5,3 +5,8 @@ vqfx2	mgmt_ip=192.168.100.21
 [arista]
 veos3	mgmt_ip=192.168.100.22
 veos4	mgmt_ip=192.168.100.23
+
+[all:vars]
+config_dir="~/config"
+config_owner="vagrant"
+config_group="vagrant"

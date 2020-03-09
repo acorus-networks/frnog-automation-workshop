@@ -1,0 +1,16 @@
+{% if ibgp_peers is defined %}
+!
+route-map IPV4-IBGP-IN permit 10
+exit
+!
+route-map IPV4-IBGP-OUT permit 10
+exit
+!
+route-map IPV6-IBGP-IN permit 10
+exit
+!
+route-map IPV6-IBGP-OUT permit 10
+exit
+!
+{# if ibgp_peers is defined #}
+{% endif %}

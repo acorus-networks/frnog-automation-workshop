@@ -63,6 +63,48 @@
         regexp: '^#host_key_checking = False'
         line: 'host_key_checking = False'
 
+    - name: Edit ansible config file (vault file path)
+      lineinfile:
+        path: /etc/ansible/ansible.cfg
+        regexp: '^#vault_password_file = /path/to/vault_password_file'
+        line: 'vault_password_file = ~/.vault_pass.txt'
+
+    - name: Edit ansible config file (vault file path)
+      lineinfile:
+        path: /etc/ansible/ansible.cfg
+        regexp: '^#vault_password_file = /path/to/vault_password_file'
+        line: 'vault_password_file = ~/.vault_pass.txt'
+
+    - name: Edit ansible config file (display skipped)
+      lineinfile:
+        path: /etc/ansible/ansible.cfg
+        regexp: '^#display_skipped_hosts = True'
+        line: 'display_skipped_hosts = False'
+
+    - name: Edit ansible config file (vars stdout)
+      lineinfile:
+        path: /etc/ansible/ansible.cfg
+        regexp: '^#display_args_to_stdout = False'
+        line: 'display_args_to_stdout = False'
+
+    - name: Edit ansible config file (vars stdout)
+      lineinfile:
+        path: /etc/ansible/ansible.cfg
+        regexp: '^#system_warnings = True'
+        line: 'system_warnings = False'
+
+    - name: Edit ansible config file (deprecation_warnings)
+      lineinfile:
+        path: /etc/ansible/ansible.cfg
+        regexp: '^#deprecation_warnings = True'
+        line: 'deprecation_warnings = False'
+
+    - name: Edit ansible config file (command_warnings)
+      lineinfile:
+        path: /etc/ansible/ansible.cfg
+        regexp: '^#command_warnings = False'
+        line: '#command_warnings = False'
+
     - git:
        repo: https://github.com/a-delannoy/yaani.git
        dest: /home/vagrant/netbox-provisioning/yaani
@@ -71,10 +113,15 @@
       command: chdir=/home/vagrant/netbox-provisioning/yaani make install
       ignore_errors: yes
 
-    - name: export var yaani
+    - name: export var yaani config
       lineinfile:
         path: /home/vagrant/.bashrc
         line: export YAANI_CONFIG_FILE=/home/vagrant/netbox-provisioning/config_file.yml
+
+    - name: export var yaani peer script
+      lineinfile:
+        path: /home/vagrant/.bashrc
+        line: export YAANI_MODULES_PATH=/home/vagrant/netbox-provisioning/
 
     - name: Create vault id
       copy:
@@ -94,15 +141,11 @@
         content: |
           Host vqfx1
              User noc
-             PreferredAuthentications publickey
-             Port 22
-             IdentityFile ~/.ssh/id_rsa          
+             Port 22    
 
           Host vqfx2
              User noc
-             PreferredAuthentications publickey
-             Port 22
-             IdentityFile ~/.ssh/id_rsa          
+             Port 22     
 
           Host veos3
              User noc

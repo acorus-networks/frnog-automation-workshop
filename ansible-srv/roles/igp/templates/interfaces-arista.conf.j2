@@ -1,18 +1,18 @@
 {% if igp is defined %}
 
-{% if igp.loopback is defined %}
+{% if igp.loopbacks is defined %}
 !
-interface Loopback{{ loopback.vlan }}
-  description "Loopback: {% if interface.ipv4.local_ip is defined %} - {{ interface.ipv4.local_ip }}{% endif %}{% if interface.ipv6.local_ip is defined %} - {{ interface.ipv6.local_ip }}{% endif %}"
-  {% if loopback.ipv4 is defined %}
-  c{{ loopback.ipv4.local_ip }}/{{ loopback.ipv4.netmask }}
+interface Loopback 0
+  description "Loopback: {% if igp.loopbacks.ipv4.local_ip is defined %} - {{ igp.loopbacks.ipv4.local_ip }}{% endif %}{% if igp.loopbacks.ipv6.local_ip is defined %} - {{ igp.loopbacks.ipv6.local_ip }}{% endif %}"
+  {% if igp.loopbacks.ipv4 is defined %}
+  ip address {{ igp.loopbacks.ipv4.local_ip }}/{{ igp.loopbacks.ipv4.netmask }}
   {% endif %}
   {% if loopback.ipv6 is defined %}
-  ipv6 address {{ loopback.ipv6.local_ip }}/{{ loopback.ipv6.netmask }}
+  ipv6 address {{ igp.loopbacks.ipv6.local_ip }}/{{ igp.loopbacks.ipv6.netmask }}
   {% endif %}
 exit
 !
-{# if igp.loopback is defined #}
+{# if igp.loopbacks is defined #}
 {% endif %}
 
 
@@ -21,7 +21,7 @@ exit
 !
 interface {{ neighbor.interface }}
   no switchport
-  description "Core: {{ peer }} {% if interface.ipv4.local_ip is defined %} - {{ interface.ipv4.local_ip }}{% endif %}{% if interface.ipv6.local_ip is defined %} - {{ interface.ipv6.local_ip }}{% endif %}"
+  description "Core: {{ neighbor.peer }}{% if interface.ipv4.local_ip is defined %} - {{ interface.ipv4.local_ip }}{% endif %}{% if interface.ipv6.local_ip is defined %} - {{ interface.ipv6.local_ip }}{% endif %}"
   {% if neighbor.ipv4 is defined %}
   ip address {{ neighbor.ipv4.local_ip }}/{{ neighbor.ipv4.netmask }}
   {% endif %}

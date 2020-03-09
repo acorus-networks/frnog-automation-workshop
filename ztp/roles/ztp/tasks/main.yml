@@ -1,0 +1,33 @@
+---
+- name: create directory for switch configurations
+  delegate_to: "{{ dhcp_pxe_server_ztp }}"
+  file: path={{ switch_config_path_remote }} state=directory
+  run_once: True
+
+- name: create directory for dhcp configurations
+  delegate_to: "{{ dhcp_pxe_server_ztp }}"
+  file: path={{ dhcp_switch_config_path }} state=directory
+  run_once: True
+
+- name: generate top of rack switch configuration
+  delegate_to: "{{ dhcp_pxe_server_ztp }}"
+  template: src=switch_config.j2 dest={{ switch_config_path_remote }}/{{ inventory_hostname }}.conf
+
+- name: generate dhcp configuration
+  delegate_to: "{{ dhcp_pxe_server_ztp }}"
+  template:
+    src: dhcp_config.j2
+    dest: '{{ dhcp_switch_config_path }}/{{ inventory_hostname }}.conf'
+    mode: 0777
+
+- name: update main dhcpd server configuration to add host config
+  delegate_to: "{{ dhcp_pxe_server_ztp }}"
+  lineinfile:
+    dest: "{{ dhcp_config }}"
+    line: 'include "{{ dhcp_switch_config_path }}/{{ inventory_hostname }}.conf";'
+    create: yes
+
+- name: restart dhcpd service
+  delegate_to: "{{ dhcp_pxe_server_ztp }}"
+  service: name=isc-dhcp-server state=restarted
+  run_once: True

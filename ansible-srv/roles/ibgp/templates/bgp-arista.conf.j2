@@ -1,4 +1,5 @@
 {% if ibgp_peers is defined %}
+!
 router bgp {{ my_asn }}
   ! ecmp sur 4 path max (par defaut pas d’ecmp)
   maximum-paths 4
@@ -14,85 +15,36 @@ router bgp {{ my_asn }}
   no bgp bestpath as-path multipath-relax
   address-family ipv4
     neighbor IPV4-IBGP activate
+    neighbor IPV4-IBPG route-map IPV4-IBGP-IN in
+    neighbor IPV4-IBPG route-map IPV4-IBGP-OUT in
   address-family ipv6
     neighbor IPV6-IBPG activate
-
+    neighbor IPV6-IBPG remote-as {{ my_asn }}
+    neighbor IPV6-IBPG route-map IPV6-IBGP-IN in
+    neighbor IPV6-IBPG route-map IPV6-IBGP-OUT in
+  exit
+!
+{% for peer in ibgp_peers %}
+{% if peer.ipv4 is defined %}
+!
+router bgp {{ my_asn }}
+  neighbor {{ peer.ipv4 }} peer-group IPV4-IBGP
+  neighbor {{ peer.ipv4 }} description {{ peer.name }}
+  exit
+!
+{# if peer.ipv4 is defined #}
+{% endif %}
+{% if peer.ipv6 is defined %}
+!
+router bgp {{ my_asn }}
+  neighbor {{ peer.ipv6 }} peer-group IPV6-IBGP
+  neighbor {{ peer.ipv6 }} description {{ peer.name }}
+  exit
+!
+{# if peer.ipv6 is defined #}
+{% endif %}
+{# for peer in ibgp_peers #}
+{% endfor %}
 
 {# if ibgp_peers is defined #}
 {% endif %}
-
-
-
-
-
-
-{% if transit_sessions is defined %}
-
-router bgp {{ my_asn }}
-  ! ecmp sur 4 path max (par defaut pas d’ecmp)
-  maximum-paths 4
-  ! par d’annonce si pas de route-map / prefix list
-  bgp missing-policy address-family all direction out action deny
-  bgp missing-policy address-family all direction in action deny
-  ! ne pas activer le neighbor si s’il n’est pas "activate” explicitement
-  no bgp default ipv4-unicast
-  ! desactiver le add-path par defaut 
-  no bgp additional-paths receive
-  no bgp additional-paths send
-  ! si on a des AS_PATH de meme longueur mais différents : ne pas faire d’ECMP (et continuer le Best path selection algorithme)
-  no bgp bestpath as-path multipath-relax
-  address-family ipv4
-    neighbor IPV4-BPG-TRANSIT activate
-  address-family ipv6
-    neighbor IPV6-BPG-TRANSIT activate
-!
-{% for session in transit_sessions %}
-{% if session.ipv4 is defined %}
-router bgp {{ my_asn }}
-  neighbor {{ session.ipv4.peer_ip }} peer-group IPV4-BPG-TRANSIT
-  neighbor {{ session.ipv4.peer_ip }} remote-as {{ session.peer_asn }}
-  neighbor {{ session.ipv4.peer_ip }} description {{ session.name }}
-  neighbor {{ session.ipv4.peer_ip }} route-map IPV4-AS{{ session.peer_asn }}-IN in
-  neighbor {{ session.ipv4.peer_ip }} route-map IPV4-AS{{ session.peer_asn }}-OUT out
-!
-{# if session.ipv4 is defined #}
-{% endif %}
-{% if session.ipv6 is defined %}
-router bgp {{ my_asn }}
-  neighbor {{ session.ipv6.peer_ip }} peer-group IPV6-BPG-TRANSIT
-  neighbor {{ session.ipv6.peer_ip }} remote-as {{ session.peer_asn }}
-  neighbor {{ session.ipv6.peer_ip }} description {{ session.name }}
-  neighbor {{ session.ipv6.peer_ip }} route-map IPV6-AS{{ session.peer_asn }}-IN in
-  neighbor {{ session.ipv6.peer_ip }} route-map IPV6-AS{{ session.peer_asn }}-OUT out
-!
-
-
-{# if session.ipv6 is defined #}
-{% endif %}
-{# for session in transit_sessions #}
-{% endfor %}
-{# if transit_sessions is defined #}
-{% endif %}
-
-
-{% for peer in peers %}
-
-
-{% endfor %}
-
-
-
-{% for peer in peers %}
-
-
-{% endfor %}
-
-{# {% if ansible_host == 'vqfx1' %}
-{% set prefix = "1.0.0.0/8" %}
-{% elif ansible_host == 'vqfx2' -%}
-{% set prefix = "2.0.0.0/8" %}
-{% elif ansible_host == 'vqfx3' -%}
-{% set prefix = "3.0.0.0/8" %}
-{% endif %} #}
-
-

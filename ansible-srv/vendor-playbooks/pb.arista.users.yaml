@@ -1,4 +1,5 @@
 ---
+
 - name: Config Users of Arista devices
   hosts: arista
   connection: network_cli

@@ -8,7 +8,7 @@ interfaces {
       description "Transit-ip: {{ interface.peer_name }}{% if interface.ipv4.peer_ip is defined %} - {{ interface.ipv4.peer_ip }}{% endif %}{% if interface.ipv6.peer_ip is defined %} - {{ interface.ipv6.peer_ip }}{% endif %}"
       {% if interface.ipv4 is defined %}
       family inet {
-        address {{ vlan.ipv4.local_ip }}/{{ vlan.ipv4.netmask }};
+        address {{ interface.ipv4.local_ip }}/{{ interface.ipv4.netmask }};
       }
       {% endif %}
       {% if interface.ipv6 is defined %}

@@ -1,4 +1,5 @@
 ---
+
 - name: Config Users of Juniper devices
   hosts: juniper
   connection: network_cli
@@ -10,7 +11,7 @@
     - igp
 
   tasks:
-
+    
     - name: Assembling configurations and copying to conf
       assemble: src=~/configs/{{ ansible_host }} dest=~/configs/{{ ansible_host }}/{{ inventory_hostname }}.conf
 

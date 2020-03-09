@@ -1,0 +1,11 @@
+---
+
+config_dir: "~/config"
+config_owner: "vagrant"
+config_group: "vagrant"
+
+management_ip:
+  vqfx1: 192.168.100.20
+  vqfx2: 192.168.100.21
+  veos3: 192.168.100.22
+  veos4: 192.168.100.23

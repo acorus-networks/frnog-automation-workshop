@@ -4,7 +4,7 @@
 - name: Base Configuration - Juniper
   template:
     src={{ item }}.j2
-    dest=~/configs/{{ ansible_host }}/{{ item }}.part
+    dest={{ config_dir }}/{{ ansible_host }}/0_{{ ansible_loop.index }}_{{ item }}.part
   tags:
     - base
   when: 
@@ -12,11 +12,13 @@
   with_items:
     - base-juniper.conf
     - users-juniper.conf
+  loop_control:
+    extended: yes
 
 - name: Base Configuration - Arista
   template:
     src={{ item }}.j2
-    dest=~/configs/{{ ansible_host }}/{{ item }}.part
+    dest={{ config_dir }}/{{ ansible_host }}/0_{{ ansible_loop.index }}_{{ item }}.part
   tags:
     - base
   when: 
@@ -24,3 +26,5 @@
   with_items:
     - base-arista.conf
     - users-arista.conf
+  loop_control:
+    extended: yes

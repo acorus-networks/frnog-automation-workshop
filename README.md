@@ -2,9 +2,27 @@
 
 # Requirement
 
-This Vagrantfile will spawn 2 instances of VQFX (Full), 2 instances of VEOS routers and 1 ubuntu server.
+This Vagrantfile will spawn 2 instances of VQFX (Full), 2 instances of VEOS routers and 1 Ubuntu server.
 
-vqfx1 will be connected to our lab Tier 1 ISP, RS will be reacheable through the transit session.
+Transit ports/providers :
+
+ - VQFX1 will be connected to Volterra (AS35280), on two ports.
+
+ - VEOS3 will be connected to Cloud Temple (AS33930), on two ports.
+
+Your ASN for today will be AS650{{ your_pod_id }} !
+
+# Special vars :
+
+Pay attention to your POD ID and POD IP, we'll use them during the workshop to access the lab :
+
+ - {{ your_pod_id }} : your dedicated POD id
+
+ - acorus{{ your_pod_id }} : the user to ssh the lab
+
+ - {{ your_pod_ip }} : your server ip 
+
+ - AS650{{ your_pod_id } : your ASN for today
 
 ### Resources
  - RAM : 16G
@@ -12,20 +30,30 @@ vqfx1 will be connected to our lab Tier 1 ISP, RS will be reacheable through the
 
 # Topology
 
-                =============                              =============
-                |           |                              |   demo0X  |
-                |   Tier 1  |                              =============  
-                |           |                                     
-                =============                                               =============
-                      |                                                     |    srv    |
-                      |                                                     =============
-                      |                                     INBAND MGMT           |eth0
-                      |                     |------------------------------------------|                    
-                      |                     |                                          |
-                      |            xe-0/0/4 |                                          | Ethernet3
-                      |              =============  xe-0/0/0           Ethernet1 =============
-                      |------------- |           | ----------------------------- |           |
-                xe-0/0/2             |   vqfx1   |                               |   veos3   |
+```     
+                                                           =============
+                                                           |   PODXX   |
+                                                           ============= 
+
+
+
+                              |---------------------------------------------------------------------|
+                              |                                                                     |
+                              |                                                                     |
+                ==============================                                        ==============================
+                |                            |                                        |                            |
+                |     VOLTERRA - AS35280     |                                        |    Cloud Temple - AS33930  |
+                |                            |                                        |                            |
+                ==============================             =============              ==============================  
+                      |                  |                 |    srv    |                  |                 |
+                      |                  |                 =============                  |                 |
+                      |                  |                       |eth0                    |                 |
+                      |                  |  |------------------------------------------|  |                 | 
+                      |                  |  |                INBAND MGMT               |  |                 |
+                      |         xe-0/0/3 |  | xe-0/0/4                       Ethernet5 |  | Ethernet3       |
+                      |              =============  xe-0/0/0           Ethernet1 =============              |
+                      |------------- |           | ----------------------------- |           | -------------|
+                xe-0/0/2             |   vqfx1   |                               |   veos3   |             Ethernet4 
                             |------- |           |                               |           | -------|
                             |        =============                               =============        |
                             |            em1|                                                         |
@@ -43,7 +71,7 @@ vqfx1 will be connected to our lab Tier 1 ISP, RS will be reacheable through the
                             |------- |   vqfx2   |                               |   veos4   |
                                      |           | ----|                   |---- |           |
                                      =============     |                   |     =============
-                                         em1|          | xe-0/0/4          | Ethernet3 
+                                         em1|          | xe-0/0/4          | Ethernet5 
                                      =============     |                   |
                                      | vqfx-pfe2 |     |                   | 
                                      =============     |                   |
@@ -52,11 +80,12 @@ vqfx1 will be connected to our lab Tier 1 ISP, RS will be reacheable through the
                                                        |-------------------|
                                                             INBAND MGMT        
                                                                                        
+```
+
 
 # Provisioning
 
-All VQFX,VEOS and server will be preconfigured.
-
+All VQFX,VEOS and server will be pre-configured.
 
 - vqfx, veos : Ansible is used to configure interfaces
 - srv: Ansible is used to prepare the machine (packages, ansible and demo files)
@@ -64,37 +93,48 @@ All VQFX,VEOS and server will be preconfigured.
 ## Tools
 
 - Ansible 
-- Vagrant / Virtualbox
+- Vagrant
+- Virtualbox
 - Ansible Vault
+- Yaani (https://github.com/a-delannoy/yaani)
 
 ## Lab setup
 
 #### SSH on the demo machine :
 
 ```
-$ ssh acorus@{{your_pod_ip}}
+$ ssh acorus{{ your_pod_id }}@{{ your_pod_ip }}
 ```
 
 #### Check vagrant env (shoud be ready to use) :
 
 ```
-acorus@demo01:~$ cd frnog-automation-workshop
-acorus@demo01:~/frnog-automation-workshop$ vagrant status
+acorus{{ your_pod_id }}@{{ your_pod_ip }}:~$ cd frnog-automation-workshop
+acorus{{ your_pod_id }}@{{ your_pod_ip }}:~/frnog-automation-workshop$ vagrant status
 ```
 
 #### SSH to devices on lab :
 
-Open 4 more terminals, connnect to your POD demo server in each. You should have 5 terminal opened and connected to your demo server now.
-Then SSH to each device in the lab, repeat for vqfx1, vqfx2, veos1, veos2, srv.
+Open 4 more terminals, connnect to your POD demo server. You should have 5 terminal opened and connected to your demo server now.
+
+Then use vagrant SSH command to each device in the lab, repeat for vqfx1, vqfx2, veos3, veos4, srv.
+
 
 ```
-acorus@demo01:~$ cd frnog-automation-workshop
-acorus@demo01:~/frnog-automation-workshop$ vagrant ssh vqfx1
+acorus{{ your_pod_id }}@{{ your_pod_ip }}:~$ cd frnog-automation-workshop
+acorus{{ your_pod_id }}@{{ your_pod_ip }}:~/frnog-automation-workshop$ vagrant ssh vqfx1
 ```
+
+```
+acorus{{ your_pod_id }}@{{ your_pod_ip }}:~$ cd frnog-automation-workshop
+acorus{{ your_pod_id }}@{{ your_pod_ip }}:~/frnog-automation-workshop$ vagrant ssh veos3
+```
+
+...
 
 #### Test on VQFX1 :
 
-Run below command on vqfx1 :
+Switch to the terminal tab connected to vqfx1. Run the below command on vqfx1 :
 
 ```
 vagrant@vqfx1> show configuration
@@ -133,17 +173,19 @@ Last login: Tue Feb 18 16:31:54 2020 from 192.168.100.10
 noc@vqfx1>
 ```
 
+Exit the vqfx1 now.
+
 
 Let's try with Ansible now, well test Netconf connectivity towards Juniper routers :
 
 ```
-vagrant@server:~$ ansible-playbook -i inventories/hosts pb.test.netconf.yaml --limit juniper --vault-id ~/.vault_pass.txt
+vagrant@server:~$ ansible-playbook -i inventories/hosts pb.test.netconf.yaml --limit juniper
 ```
 
 OUTPUT
 
 ```
-vagrant@server:~$ ansible-playbook -i inventories/hosts pb.test.netconf.yaml --limit juniper --vault-id ~/.vault_pass.txt
+vagrant@server:~$ ansible-playbook -i inventories/hosts pb.test.netconf.yaml --limit juniper 
 
 PLAY [Compare  Junos OS] ***************************************************************************************************************************************************************************************************
 
@@ -179,13 +221,13 @@ vqfx2                      : ok=4    changed=0    unreachable=0    failed=0    s
 We'll try to get some infos now from our Arista routers :
 
 ```
-vagrant@server:~$ ansible-playbook -i inventories/hosts pb.test.veos.yaml --limit arista --vault-id ~/.vault_pass.txt
+vagrant@server:~$ ansible-playbook -i inventories/hosts pb.test.veos.yaml --limit arista 
 ```
 
 OUTPUT
 
 ```
-vagrant@server:~$ ansible-playbook -i inventories/hosts pb.test.veos.yaml --limit arista --vault-id ~/.vault_pass.txt
+vagrant@server:~$ ansible-playbook -i inventories/hosts pb.test.veos.yaml --limit arista 
 
 PLAY [Run commands on remote Arista devices] *******************************************************************************************************************************************************************************
 
@@ -291,7 +333,7 @@ Append to the file :
 #### Push the configuration to all devices
 
 ```
-vagrant@server$ ansible-playbook -i inventories/hosts pb.juniper.users.yaml --vault-id ~/.vault_pass.txt
+vagrant@server$ ansible-playbook -i inventories/hosts pb.juniper.users.yaml 
 ```
 
 OUTPUT
@@ -432,7 +474,7 @@ Check content of ```~/roles/igp/templates/*.yaml```
 The playbook below will configure interfaces, loopbacks & OSPF.
 
 ```
-ansible-playbook -i inventories/hosts pb.juniper.igp.yaml --vault-id ~/.vault_pass.txt
+ansible-playbook -i inventories/hosts pb.juniper.igp.yaml 
 ```
 
 New setup :
@@ -463,13 +505,13 @@ Instance: master
 Now we'll run a playbook to ping all our directly connected neighbors and their loopbacks, igp.yaml file will used to get ips of peers.
 
 ```
-ansible-playbook -i inventories/hosts pb.juniper.ping.yaml --vault-id ~/.vault_pass.txt
+ansible-playbook -i inventories/hosts pb.juniper.ping.yaml 
 
 ```
 OUTPUT
 
 ```
-vagrant@server:~$ ansible-playbook -i inventories/hosts pb.juniper.ping.yaml --vault-id ~/.vault_pass.txt
+vagrant@server:~$ ansible-playbook -i inventories/hosts pb.juniper.ping.yaml 
 
 PLAY [Ping devices] *********************************************************************************************************************
 
@@ -530,13 +572,13 @@ vagrant@vqfx1# commit
 Re-run the test playbook and check that all loopbacks are still reacheable from all devices :
 
 ```
-ansible-playbook -i inventories/hosts pb.juniper.ping.yaml --vault-id ~/.vault_pass.txt
+ansible-playbook -i inventories/hosts pb.juniper.ping.yaml 
 
 ```
 OUTPUT
 
 ```
-vagrant@server:~$ ansible-playbook -i inventories/hosts pb.juniper.ping.yaml --vault-id ~/.vault_pass.txt
+vagrant@server:~$ ansible-playbook -i inventories/hosts pb.juniper.ping.yaml 
 
 PLAY [Ping devices] *********************************************************************************************************************
 
@@ -630,13 +672,13 @@ BGP is not running
 Template is already created, check it then apply it.
 
 ```
-vagrant@server$ ansible-playbook -i inventories/hosts pb.juniper.bgp.yaml --vault-id ~/.vault_pass.txt
+vagrant@server$ ansible-playbook -i inventories/hosts pb.juniper.bgp.yaml 
 ```
 
 OUTPUT
 
 ```
-vagrant@server:~$ ansible-playbook -i inventories/hosts pb.juniper.bgp.yaml --vault-id ~/.vault_pass.txt
+vagrant@server:~$ ansible-playbook -i inventories/hosts pb.juniper.bgp.yaml 
 
 PLAY [Config BGP of Juniper devices] ****************************************************************************************************
 
@@ -719,7 +761,7 @@ Your playbook should give the below output :
 OUTPUT
 
 ```
-vagrant@server:~$ ansible-playbook -i inventories/hosts pb.juniper.check-bgp.yaml --vault-id ~/.vault_pass.txt
+vagrant@server:~$ ansible-playbook -i inventories/hosts pb.juniper.check-bgp.yaml 
 
 PLAY [Check BGP] ****************************************************************************************************************************************************
 

@@ -3,7 +3,7 @@
 - name: iBGP configuration - Juniper
   template:
     src={{ item }}.j2
-    dest=~/configs/{{ ansible_host }}/{{ ansible_loop.index }}_{{ item }}.part
+    dest={{ config_dir }}/{{ ansible_host }}/2_{{ ansible_loop.index }}_{{ item }}.part
   tags:
     - ibgp
   when: 
@@ -17,12 +17,13 @@
 - name: iBGP configuration - Arista
   template:
     src={{ item }}.j2
-    dest=~/configs/{{ ansible_host }}/{{ ansible_loop.index }}_{{ item }}.part
+    dest={{ config_dir }}/{{ ansible_host }}/2_{{ ansible_loop.index }}_{{ item }}.part
   tags:
     - ibgp
   when: 
     - "'arista' in group_names"  
   loop:
     - bgp-arista.conf
+    - policies-arista.conf
   loop_control:
     extended: yes
