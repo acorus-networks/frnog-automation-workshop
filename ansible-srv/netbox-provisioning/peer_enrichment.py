@@ -1,10 +1,14 @@
 import ipaddress
+import sys
 
 def find_peer_ip(address, netmask):
     """Determine peer ip when given /31 or /30 network"""
     local_ip = ipaddress.ip_interface("{}/{}".format(address, netmask))
-    peer_ip = [ip for ip in list(local_ip.network) if ip != local_ip.ip]
-    assert len(peer_ip) == 1
+    peer_ip = [ip for ip in list(local_ip.network.hosts()) if ip != local_ip.ip]
+    try:
+        assert len(peer_ip) == 1
+    except AssertionError:
+        sys.exit("The auto peer IP discovering is only possible for /30, /31, /127 and /126 subnets.")
     return str(peer_ip[0])
 
 def add_peer_ip(inventory):
