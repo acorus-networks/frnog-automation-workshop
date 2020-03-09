@@ -59,8 +59,8 @@ Pay attention to your POD ID and POD IP, we'll use them during the workshop to a
                             |            em1|                                                         |
                             |        =============                                                    |
                             |        | vqfx-pfe1 |                                                    |
-                            |        =============                                                    |
-                            |                                                                         |
+                            |        =============            AS650XX                                 |
+                            |                                 -------                                 |
                         xe-0/0/1                                                                   Ethernet2  
                             |                                                                         |
                             |                                                                         | 
@@ -129,6 +129,9 @@ acorus{{ your_pod_id }}@{{ your_pod_ip }}:~/frnog-automation-workshop$ vagrant s
 acorus{{ your_pod_id }}@{{ your_pod_ip }}:~$ cd frnog-automation-workshop
 acorus{{ your_pod_id }}@{{ your_pod_ip }}:~/frnog-automation-workshop$ vagrant ssh veos3
 ```
+
+Pro-tip: As you will share the POD with all other members of the group, we suggest that one person run the ansible commands, one person check/edit the templates. All others can be connected to the routers to check/run operational commands.
+Avoid to run ansible commands in parallel.
 
 ...
 
@@ -314,7 +317,7 @@ Exiting configuration mode
 Add your user in users file :
 
 ```
-vagrant@server$ ansible-vault edit inventories/group_vars/all/users.yaml
+vagrant@server$ ansible-vault edit group_vars/all/users.yaml
 Vault password:
 ```
 
