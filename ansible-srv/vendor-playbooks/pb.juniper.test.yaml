@@ -12,10 +12,6 @@
     - name: Checking NETCONF connectivity
       wait_for: host={{ ansible_host }} port=830 timeout=15
 
-    - name: Print IP of remote device
-      debug:
-        msg: "{{ mgmt_ip }}"
-
     - name: Retrieving information from devices running Junos OS
       juniper_junos_facts:
 
