@@ -8,6 +8,7 @@ protocols {
         unicast;
       }
       local-as {{ my_asn }};
+      local-address {{ igp.loopbacks.ipv4.local_ip }};
       import ipv4-ibgp-in;
       export ipv4-ibgp-out;
       {% for peer in ibgp_peers %}
@@ -32,6 +33,7 @@ protocols {
       local-as {{ my_asn }};
       import ipv6-ibgp-in;
       export ipv6-ibgp-out;
+      local-address {{ igp.loopbacks.ipv6.local_ip }}
       {% for peer in ibgp_peers %}
       {% if peer.ipv6 is defined %}
       neighbor {{ peer.ipv6 }} {

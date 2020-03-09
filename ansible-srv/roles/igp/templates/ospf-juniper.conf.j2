@@ -27,9 +27,9 @@ groups {
   }
 }
 
-{% if igp.loopback is defined %}
+{% if igp.loopbacks is defined %}
 routing-options {
-  router-id {{ loopback.ipv4.local_ip }};
+  router-id {{ igp.loopbacks.ipv4.local_ip }};
 }
 
 protocols {
@@ -48,7 +48,7 @@ protocols {
     }
   }
 }
-{# if igp.loopback is defined #}
+{# if igp.loopbacks is defined #}
 {% endif %}
 
 

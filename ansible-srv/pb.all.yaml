@@ -49,12 +49,18 @@
   tasks:
     - name: Pushing config ... please wait ...
       eos_config:
-        src: "{{ config_dir }}/{{ ansible_host }}/{{ inventory_hostname }}.conf"
+        src: "{{ config_dir }}/{{ inventory_hostname }}.conf"
         save_when: changed
+        replace: config
       diff: true
-      register: diff_results
+      register: response_arista
+    - name: Print the difference if exists
+      tags: always
+      debug:
+        var: response_arista
+      when: response_arista is defined and response_juniper.diff_lines is defined
 
-- name: Connection to Arista devices
+- name: Connection to Juniper devices
   hosts: juniper
   connection: local
   tags:
@@ -64,7 +70,12 @@
     - name: Pushing config ... please wait ...
       juniper_junos_config:
         config_mode: 'private'
-        src: "{{ config_dir }}/{{ ansible_host }}/{{ inventory_hostname }}.conf"
-        load: replace
+        src: "{{ config_dir }}/{{ inventory_hostname }}.conf"
+        load: overwrite
         ignore_warning: true
-      register: response
+      register: response_juniper
+    - name: Print the difference if exists
+      tags: always
+      debug:
+        var: response_juniper.diff_lines
+      when: response_juniper is defined and response_juniper.diff_lines is defined
