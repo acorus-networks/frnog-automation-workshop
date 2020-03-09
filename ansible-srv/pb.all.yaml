@@ -51,7 +51,8 @@
       eos_config:
         src: "{{ config_dir }}/{{ inventory_hostname }}.conf"
         save_when: changed
-        replace: config
+        # Disable, change ssh keys
+        #replace: config
       diff: true
       register: response_arista
     - name: Print the difference if exists
