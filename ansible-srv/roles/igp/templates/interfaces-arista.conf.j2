@@ -1,5 +1,6 @@
+!
 {% if igp is defined %}
-
+!
 {% if igp.loopbacks is defined %}
 !
 interface Loopback 0
@@ -14,8 +15,7 @@ exit
 !
 {# if igp.loopbacks is defined #}
 {% endif %}
-
-
+!
 {% if igp.neighbors is defined %}
 {% for neighbor in igp.neighbors %}
 !
@@ -34,8 +34,9 @@ exit
 {% endfor %}
 {# if igp.neighbors is defined #}
 {% endif %}
-
 {# Endif igp is defined #}
 {% endif %}
+!
+
 
 

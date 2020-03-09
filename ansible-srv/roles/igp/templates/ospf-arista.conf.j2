@@ -21,19 +21,19 @@ exit
 {% if igp.neighbors is defined %}
 {% for neighbor in igp.neighbors %}
 !
+interface {{ neighbor.interface }}
+    ip ospf network point-to-point
+    ip ospf area 0.0.0.0
+    ipv6 ospf network point-to-point
+    ipv6 ospf {{ my_asn }} area 0.0.0.0
+exit
+!
 router ospf {{ my_asn }}
     no passive-interface {{ neighbor.interface }}
 exit
 !
 ipv6 router ospf {{ my_asn }}
     no passive-interface {{ neighbor.interface }}
-exit
-!
-interface {{ neighbor.interface }}
-    ip ospf network point-to-point
-    ip ospf area 0.0.0.0
-    ipv6 ospf network point-to-point
-    ipv6 ospf {{ my_asn }} area 0.0.0.0
 exit
 !
 {# for neighbor in igp.neighbors #}

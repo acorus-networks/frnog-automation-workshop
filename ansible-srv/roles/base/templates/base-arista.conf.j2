@@ -1,4 +1,3 @@
-!
 hostname {{ ansible_host }}
 !
 aaa authorization exec default local
@@ -21,4 +20,5 @@ ipv6 unicast-routing
 interface Ethernet5
    no switchport
    ip address {{ management_ip[inventory_hostname] }}/24
+exit
 !
