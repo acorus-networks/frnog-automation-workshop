@@ -125,14 +125,15 @@
 
 # Add steps Napalm ...
 
-    - name: upgrade pyaml
-      command: pip install pyyaml --upgrade
 
     - name: install pip ansible module
       command: pip install ansible
 
     - name: install napalm module
       command: pip install napalm-ansible  
+
+    - name: upgrade pyaml
+      command: pip install pyyaml --upgrade
 
     - name: execute napalm-ansible
       command: "/home/vagrant/.local/bin/napalm-ansible"
