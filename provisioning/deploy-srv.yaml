@@ -123,6 +123,34 @@
         path: /home/vagrant/.bashrc
         line: export YAANI_MODULES_PATH=/home/vagrant/netbox-provisioning/
 
+# Add steps Napalm ...
+
+    - name: upgrade pyaml
+      command: pip install pyyaml --upgrade
+
+    - name: install pip ansible module
+      command: pip install ansible
+
+    - name: install napalm module
+      command: pip install napalm-ansible  
+
+    - name: execute napalm-ansible
+      command: "/home/vagrant/.local/bin/napalm-ansible"
+
+    - name: Edit ansible config file (library)
+      lineinfile:
+        path: /etc/ansible/ansible.cfg
+        regexp: '^#library        = /usr/share/my_modules/'
+        line: 'library = /home/vagrant/.local/lib/python3.6/site-packages/napalm_ansible/modules'
+
+    - name: Edit ansible config file (action_plugins)
+      lineinfile:
+        path: /etc/ansible/ansible.cfg
+        regexp: '^# some basic default values...'
+        line: 'action_plugins = /home/vagrant/.local/lib/python3.6/site-packages/napalm_ansible/plugins/action'
+
+# End  Add steps Napalm ..
+
     - name: Create vault id
       copy:
         dest: "/home/vagrant/.vault_pass.txt"

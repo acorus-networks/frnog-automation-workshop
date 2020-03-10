@@ -34,7 +34,6 @@ exit
 !
 ipv6 router ospf {{ my_asn }}
     no passive-interface {{ neighbor.interface }}
-exit
 !
 {# for neighbor in igp.neighbors #}
 {% endfor %}

@@ -47,13 +47,16 @@
     - always
   gather_facts: no
   tasks:
-    - name: Pushing config ... please wait ...
-      eos_config:
-        src: "{{ config_dir }}/{{ inventory_hostname }}.conf"
-        save_when: changed
-        # Disable, change ssh keys
-        #replace: config
-      diff: true
+    - napalm_install_config:
+        hostname : "{{ ansible_host }}"
+        username: vagrant
+        dev_os: eos
+        password : vagrant
+        config_file: "{{ config_dir }}/{{ inventory_hostname }}.conf"
+        commit_changes: true
+        replace_config: true
+        get_diffs: true
+        diff_file : "{{ config_dir }}/{{ inventory_hostname }}/diff"
       register: response_arista
     - name: Print the difference if exists
       tags: always

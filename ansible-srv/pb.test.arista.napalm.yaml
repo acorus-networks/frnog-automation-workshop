@@ -1,0 +1,16 @@
+
+- name: Test facts Napalm
+  hosts: arista
+  connection: local
+  gather_facts: no
+  tasks:
+     - name: get facts from device
+       napalm_get_facts:
+         hostname=veos3
+         username=vagrant
+         dev_os=eos
+         password=vagrant
+       register: result
+
+     - name: print data
+       debug: var=result

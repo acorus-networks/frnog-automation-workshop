@@ -9,6 +9,7 @@ username vagrant privilege 15 role network-admin secret sha512 $6$5mtgSqlRucxrYY
 !
 ! Enable API
 management api http-commands
+   no shutdown
 !
 ! Enable IPv4 routing
 ip routing
@@ -20,5 +21,7 @@ ipv6 unicast-routing
 interface Ethernet5
    no switchport
    ip address {{ management_ip[inventory_hostname] }}/24
-exit
+!
+interface Management1
+   ip address 10.0.2.15/24
 !
