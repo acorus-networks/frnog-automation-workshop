@@ -136,20 +136,20 @@
       command: /usr/bin/pip install pyyaml
 
     - name: execute napalm-ansible
-      command: "/home/vagrant/.local/bin/napalm-ansible"
+      command: "napalm-ansible"
       ignore_errors: true
 
     - name: Edit ansible config file (library)
       lineinfile:
         path: /etc/ansible/ansible.cfg
         regexp: '^#library        = /usr/share/my_modules/'
-        line: 'library = /home/vagrant/.local/lib/python3.6/site-packages/napalm_ansible/modules'
+        line: 'library = /usr/local/lib/python3.6/dist-packages/napalm_ansible/modules'
 
     - name: Edit ansible config file (action_plugins)
       lineinfile:
         path: /etc/ansible/ansible.cfg
         regexp: '^# some basic default values...'
-        line: 'action_plugins = /home/vagrant/.local/lib/python3.6/site-packages/napalm_ansible/plugins/action'
+        line: 'action_plugins = /usr/local/lib/python3.6/dist-packages/napalm_ansible/plugins/action'
 
 # End  Add steps Napalm ..
 
