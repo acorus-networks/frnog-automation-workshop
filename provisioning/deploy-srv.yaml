@@ -125,7 +125,6 @@
 
 # Add steps Napalm ...
 
-
     - name: install pip ansible module
       command: pip install ansible
 
@@ -150,6 +149,9 @@
         path: /etc/ansible/ansible.cfg
         regexp: '^# some basic default values...'
         line: 'action_plugins = /usr/local/lib/python3.6/dist-packages/napalm_ansible/plugins/action'
+
+    - name: install jxmlease juniper move to python3
+      command: pip3 install jxmlease
 
 # End  Add steps Napalm ..
 
