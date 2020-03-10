@@ -137,6 +137,7 @@
 
     - name: execute napalm-ansible
       command: "/home/vagrant/.local/bin/napalm-ansible"
+      ignore_errors: true
 
     - name: Edit ansible config file (library)
       lineinfile:
