@@ -132,8 +132,8 @@
     - name: install napalm module
       command: pip install napalm-ansible  
 
-    - name: upgrade pyaml
-      command: pip install pyyaml --upgrade
+    - name: upgrade pyyaml
+      command: /usr/bin/pip install pyyaml
 
     - name: execute napalm-ansible
       command: "/home/vagrant/.local/bin/napalm-ansible"
