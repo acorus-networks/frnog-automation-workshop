@@ -4,13 +4,13 @@ router bgp {{ my_asn }}
   ! ecmp sur 4 path max (par defaut pas d’ecmp)
   maximum-paths 4
   ! par d’annonce si pas de route-map / prefix list
-  bgp missing-policy address-family all direction out action deny
-  bgp missing-policy address-family all direction in action deny
+  bgp missing-policy direction out action deny
+  bgp missing-policy direction in action deny
   ! ne pas activer le neighbor si s’il n’est pas "activate” explicitement
   no bgp default ipv4-unicast
   ! desactiver le add-path par defaut 
   no bgp additional-paths receive
-  no bgp additional-paths send
+  no bgp additional-paths send any
   ! si on a des AS_PATH de meme longueur mais différents : ne pas faire d’ECMP (et continuer le Best path selection algorithme)
   no bgp bestpath as-path multipath-relax
   address-family ipv4
