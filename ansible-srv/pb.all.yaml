@@ -49,9 +49,9 @@
   tasks:
     - napalm_install_config:
         hostname : "{{ ansible_host }}"
-        username: vagrant
-        dev_os: eos
-        password : vagrant
+        username: "{{ ansible_user }}"
+        dev_os: "{{ ansible_network_os }}"
+        password : "{{ ansible_password }}"
         config_file: "{{ config_dir }}/{{ inventory_hostname }}.conf"
         commit_changes: true
         replace_config: true
