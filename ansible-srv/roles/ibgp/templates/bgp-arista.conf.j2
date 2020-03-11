@@ -16,13 +16,13 @@ router bgp {{ my_asn }}
   address-family ipv4
     neighbor IPV4-IBGP activate
     neighbor IPV4-IBGP remote-as {{ my_asn }}
-    neighbor IPV4-IBPG route-map IPV4-IBGP-IN in
-    neighbor IPV4-IBPG route-map IPV4-IBGP-OUT in
+    neighbor IPV4-IBGP route-map IPV4-IBGP-IN in
+    neighbor IPV4-IBGP route-map IPV4-IBGP-OUT in
   address-family ipv6
-    neighbor IPV6-IBPG activate
-    neighbor IPV6-IBPG remote-as {{ my_asn }}
-    neighbor IPV6-IBPG route-map IPV6-IBGP-IN in
-    neighbor IPV6-IBPG route-map IPV6-IBGP-OUT in
+    neighbor IPV6-IBGP activate
+    neighbor IPV6-IBGP remote-as {{ my_asn }}
+    neighbor IPV6-IBGP route-map IPV6-IBGP-IN in
+    neighbor IPV6-IBGP route-map IPV6-IBGP-OUT in
   exit
 !
 {% for peer in ibgp_peers %}
