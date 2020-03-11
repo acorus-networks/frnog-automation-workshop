@@ -10,7 +10,7 @@ interfaces {
         address {{ igp.loopbacks.ipv4.local_ip }}/{{ igp.loopbacks.ipv4.netmask }};
       }
       {% endif %}
-      {% if loopback.ipv6 is defined %}
+      {% if igp.loopbacks.ipv6 is defined %}
       family inet6 {
         address {{ igp.loopbacks.ipv6.local_ip }}/{{ igp.loopbacks.ipv6.netmask }};
       }

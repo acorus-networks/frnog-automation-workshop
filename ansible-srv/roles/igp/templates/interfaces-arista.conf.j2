@@ -8,7 +8,7 @@ interface Loopback 0
   {% if igp.loopbacks.ipv4 is defined %}
   ip address {{ igp.loopbacks.ipv4.local_ip }}/{{ igp.loopbacks.ipv4.netmask }}
   {% endif %}
-  {% if loopback.ipv6 is defined %}
+  {% if igp.loopbacks.ipv6 is defined %}
   ipv6 address {{ igp.loopbacks.ipv6.local_ip }}/{{ igp.loopbacks.ipv6.netmask }}
   {% endif %}
 exit
