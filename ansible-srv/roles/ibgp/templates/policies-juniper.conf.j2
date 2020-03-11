@@ -5,6 +5,10 @@ policy-options {
         then accept;
     }
     policy-statement ipv4-ibgp-out {
+        term management {
+          from interface [ em0 em1 xe-0/0/4 ];
+          then reject;
+        }
         term direct {
           from protocol direct;
           then {
@@ -43,7 +47,43 @@ policy-options {
         then accept;
     }
     policy-statement ipv6-ibgp-out {
-        then accept;
+        term management {
+          from interface [ em0 em1 xe-0/0/4 ];
+          then reject;
+        }
+        term direct {
+          from protocol direct;
+          then {
+            community add MY-IGP-DIRECT;
+            accept;
+          }
+        }
+        term static {
+          from protocol static;
+          then {
+            community add MY-IGP-STATIC;
+            accept;
+          }
+        }
+        term igp {
+          from community [ MY-IGP-DIRECT MY-IGP-STATIC ];
+          then accept;
+        }
+        term my-prefixes {
+          from community MY-PREFIXES;
+          then accept;
+        }
+        term transit {
+          from community MY-UPSTREAM-ALL;
+          then accept;
+        }
+        term default {
+          from policy ipv4-default-route;
+          then accept;
+        }
+        term reject-all {
+          then reject;
+        }
     }
 }
 
@@ -61,6 +101,39 @@ policy-options {
       }
     }
   }
+}
+
+policy-options {
+
+  policy-statement ipv4-default-route {
+    term default-route {
+      from {
+        from route-filter 0.0.0.0/0 exact;
+      }
+      then {
+        accept;
+      }
+    }
+    term reject-all {
+      then {
+        accept;
+      }
+    }
+  }
+}
+
+{% set local_asn=35280 %}
+
+policy-options {
+
+  community MY-PREFIXES members {{ local_asn }}:{{ local_asn }};
+
+  community MY-IGP-DIRECT members {{ local_asn }}:10000;
+
+  community MY-IGP-STATIC members {{ local_asn }}:20000;
+
+  community MY-UPSTREAM-ALL members {{ local_asn }}:30000;
+
 }
 
 {# if ibgp_peers is defined #}
