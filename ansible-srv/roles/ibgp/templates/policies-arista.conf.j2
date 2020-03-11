@@ -3,7 +3,24 @@
 route-map IPV4-IBGP-IN permit 10
 exit
 !
+route-map IPV4-IBGP-OUT deny 5
+   match interface Ethernet5
+!
 route-map IPV4-IBGP-OUT permit 10
+   match source-protocol connected
+!
+route-map IPV4-IBGP-OUT permit 15
+   match source-protocol static
+   set community {{ my_asn }}:20000
+!
+route-map IPV4-IBGP-OUT permit 20
+   match community {{ my_asn }}:{{ my_asn }}
+!
+route-map IPV4-IBGP-OUT permit 25
+   match community {{ my_asn }}:30000
+!
+route-map IPV4-IBGP-OUT permit 30
+   match ip address prefix-list ipv4-default-route
 exit
 !
 route-map IPV6-IBGP-IN permit 10

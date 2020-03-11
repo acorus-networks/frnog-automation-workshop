@@ -2,16 +2,16 @@
 !
 router bgp {{ my_asn }}
   address-family ipv4
-    neighbor IPV4-BPG-TRANSIT activate
+    neighbor IPV4-BGP-TRANSIT activate
   address-family ipv6
-    neighbor IPV6-BPG-TRANSIT activate
+    neighbor IPV6-BGP-TRANSIT activate
   exit
 !
 {% for session in transit_sessions %}
 {% if session.ipv4 is defined %}
 !
 router bgp {{ my_asn }}
-  neighbor {{ session.ipv4.peer_ip }} peer-group IPV4-BPG-TRANSIT
+  neighbor {{ session.ipv4.peer_ip }} peer-group IPV4-BGP-TRANSIT
   neighbor {{ session.ipv4.peer_ip }} remote-as {{ session.peer_asn }}
   neighbor {{ session.ipv4.peer_ip }} description {{ session.name }}
   neighbor {{ session.ipv4.peer_ip }} route-map IPV4-AS{{ session.peer_asn }}-IN in
@@ -23,7 +23,7 @@ router bgp {{ my_asn }}
 {% if session.ipv6 is defined %}
 !
 router bgp {{ my_asn }}
-  neighbor {{ session.ipv6.peer_ip }} peer-group IPV6-BPG-TRANSIT
+  neighbor {{ session.ipv6.peer_ip }} peer-group IPV6-BGP-TRANSIT
   neighbor {{ session.ipv6.peer_ip }} remote-as {{ session.peer_asn }}
   neighbor {{ session.ipv6.peer_ip }} description {{ session.name }}
   neighbor {{ session.ipv6.peer_ip }} route-map IPV6-AS{{ session.peer_asn }}-IN in

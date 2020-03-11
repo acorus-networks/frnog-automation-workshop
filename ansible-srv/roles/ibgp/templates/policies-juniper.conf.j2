@@ -78,7 +78,7 @@ policy-options {
           then accept;
         }
         term default {
-          from policy ipv4-default-route;
+          from policy ipv6-default-route;
           then accept;
         }
         term reject-all {
@@ -122,7 +122,27 @@ policy-options {
   }
 }
 
-{% set local_asn=35280 %}
+policy-options {
+
+  policy-statement ipv6-default-route {
+    term default-route {
+      from {
+        from route-filter ::/0 exact;
+      }
+      then {
+        accept;
+      }
+    }
+    term reject-all {
+      then {
+        accept;
+      }
+    }
+  }
+}
+
+
+{% set local_asn=my_asn %}
 
 policy-options {
 
