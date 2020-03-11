@@ -5,7 +5,39 @@ policy-options {
         then accept;
     }
     policy-statement ipv4-ibgp-out {
-        then accept;
+        term direct {
+          from protocol direct;
+          then {
+            community add MY-IGP-DIRECT;
+            accept;
+          }
+        }
+        term static {
+          from protocol static;
+          then {
+            community add MY-IGP-STATIC;
+            accept;
+          }
+        }
+        term igp {
+          from community [ MY-IGP-DIRECT MY-IGP-STATIC ];
+          then accept;
+        }
+        term my-prefixes {
+          from community MY-PREFIXES;
+          then accept;
+        }
+        term transit {
+          from community MY-UPSTREAM-ALL;
+          then accept;
+        }
+        term default {
+          from policy ipv4-default-route;
+          then accept;
+        }
+        term reject-all {
+          then reject;
+        }
     }
     policy-statement ipv6-ibgp-in {
         then accept;
@@ -14,6 +46,23 @@ policy-options {
         then accept;
     }
 }
+
+policy-options {
+
+  policy-statement next-hop-self {
+    term ebgp {
+      from {
+        protocol bgp;
+        route-type external;
+      }
+      then {
+        next-hop self;
+        next policy;
+      }
+    }
+  }
+}
+
 {# if ibgp_peers is defined #}
 {% endif %}
 

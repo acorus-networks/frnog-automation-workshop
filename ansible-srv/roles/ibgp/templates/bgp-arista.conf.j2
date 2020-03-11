@@ -16,12 +16,14 @@ router bgp {{ my_asn }}
   address-family ipv4
     neighbor IPV4-IBGP activate
     neighbor IPV4-IBGP remote-as {{ my_asn }}
+    neighbor IPV4-IBGP next-hop-self
     neighbor IPV4-IBGP local-v4-addr {{ igp.loopbacks.ipv4.local_ip }}
     neighbor IPV4-IBGP route-map IPV4-IBGP-IN in
     neighbor IPV4-IBGP route-map IPV4-IBGP-OUT out
   address-family ipv6
     neighbor IPV6-IBGP activate
     neighbor IPV6-IBGP remote-as {{ my_asn }}
+    neighbor IPV6-IBGP next-hop-self
     neighbor IPV6-IBGP local-v6-addr {{ igp.loopbacks.ipv6.local_ip }}
     neighbor IPV6-IBGP route-map IPV6-IBGP-IN in
     neighbor IPV6-IBGP route-map IPV6-IBGP-OUT out
