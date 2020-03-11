@@ -15,6 +15,7 @@ router bgp {{ my_asn }}
   no bgp bestpath as-path multipath-relax
   address-family ipv4
     neighbor IPV4-IBGP activate
+    neighbor IPV4-IBGP remote-as {{ my_asn }}
     neighbor IPV4-IBPG route-map IPV4-IBGP-IN in
     neighbor IPV4-IBPG route-map IPV4-IBGP-OUT in
   address-family ipv6

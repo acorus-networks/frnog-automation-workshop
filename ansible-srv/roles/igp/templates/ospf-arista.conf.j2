@@ -30,10 +30,12 @@ exit
 !
 router ospf {{ my_asn }}
     no passive-interface {{ neighbor.interface }}
+    redistribute connected
 exit
 !
 ipv6 router ospf {{ my_asn }}
     no passive-interface {{ neighbor.interface }}
+    redistribute connected
 exit
 !
 {# for neighbor in igp.neighbors #}
