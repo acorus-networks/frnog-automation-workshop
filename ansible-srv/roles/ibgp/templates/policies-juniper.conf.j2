@@ -108,7 +108,7 @@ policy-options {
   policy-statement ipv4-default-route {
     term default-route {
       from {
-        from route-filter 0.0.0.0/0 exact;
+        route-filter 0.0.0.0/0 exact;
       }
       then {
         accept;
@@ -127,7 +127,7 @@ policy-options {
   policy-statement ipv6-default-route {
     term default-route {
       from {
-        from route-filter ::/0 exact;
+        route-filter ::/0 exact;
       }
       then {
         accept;
