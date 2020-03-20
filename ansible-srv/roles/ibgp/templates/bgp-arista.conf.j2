@@ -1,17 +1,20 @@
 {% if ibgp_peers is defined %}
 !
+ip community-list standard MY-PREFIXES permit {{ my_asn }}:{{ my_asn }}
+!
+ip community-list standard MY-IGP-DIRECT permit {{ my_asn }}:10000
+!
+ip community-list standard MY-IGP-STATIC permit {{ my_asn }}:20000
+!
+ip community-list standard MY-UPSTREAM-ALL permit {{ my_asn }}:30000
+!
 router bgp {{ my_asn }}
-  ! ecmp sur 4 path max (par defaut pas d’ecmp)
   maximum-paths 4
-  ! par d’annonce si pas de route-map / prefix list
   bgp missing-policy direction out action deny
   bgp missing-policy direction in action deny
-  ! ne pas activer le neighbor si s’il n’est pas "activate” explicitement
   no bgp default ipv4-unicast
-  ! desactiver le add-path par defaut 
   no bgp additional-paths receive
   no bgp additional-paths send any
-  ! si on a des AS_PATH de meme longueur mais différents : ne pas faire d’ECMP (et continuer le Best path selection algorithme)
   no bgp bestpath as-path multipath-relax
   address-family ipv4
     neighbor IPV4-IBGP activate
@@ -20,6 +23,7 @@ router bgp {{ my_asn }}
     neighbor IPV4-IBGP local-v4-addr {{ igp.loopbacks.ipv4.local_ip }}
     neighbor IPV4-IBGP route-map IPV4-IBGP-IN in
     neighbor IPV4-IBGP route-map IPV4-IBGP-OUT out
+    neighbor IPV4-IBGP send-community
   address-family ipv6
     neighbor IPV6-IBGP activate
     neighbor IPV6-IBGP remote-as {{ my_asn }}
@@ -27,6 +31,8 @@ router bgp {{ my_asn }}
     neighbor IPV6-IBGP local-v6-addr {{ igp.loopbacks.ipv6.local_ip }}
     neighbor IPV6-IBGP route-map IPV6-IBGP-IN in
     neighbor IPV6-IBGP route-map IPV6-IBGP-OUT out
+    neighbor IPV6-IBGP send-community
+  aggregate-address 10.{{ pod }}.0.0/16 attribute-map MY-PREFIXES
   exit
 !
 {% for peer in ibgp_peers %}

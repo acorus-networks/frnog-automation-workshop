@@ -1,5 +1,13 @@
 {% if ibgp_peers is defined %}
 !
+ip community-list standard MY-PREFIXES permit {{ my_asn }}:{{ my_asn }}
+!
+ip community-list standard MY-IGP-DIRECT permit {{ my_asn }}:10000
+!
+ip community-list standard MY-IGP-STATIC permit {{ my_asn }}:20000
+!
+ip community-list standard MY-UPSTREAM-ALL permit {{ my_asn }}:30000
+!
 route-map IPV4-IBGP-IN permit 10
 exit
 !
@@ -8,16 +16,17 @@ route-map IPV4-IBGP-OUT deny 5
 !
 route-map IPV4-IBGP-OUT permit 10
    match source-protocol connected
+   set community MY-IGP-DIRECT
 !
 route-map IPV4-IBGP-OUT permit 15
    match source-protocol static
-   set community {{ my_asn }}:20000
+   set community MY-IGP-STATIC
 !
 route-map IPV4-IBGP-OUT permit 20
-   match community {{ my_asn }}:{{ my_asn }}
+   match community MY-PREFIXES
 !
 route-map IPV4-IBGP-OUT permit 25
-   match community {{ my_asn }}:30000
+   match community MY-UPSTREAM-ALL
 !
 route-map IPV4-IBGP-OUT permit 30
    match ip address prefix-list ipv4-default-route
@@ -31,16 +40,17 @@ route-map IPV6-IBGP-OUT deny 5
 !
 route-map IPV6-IBGP-OUT permit 10
    match source-protocol connected
+   set community MY-IGP-DIRECT   
 !
 route-map IPV6-IBGP-OUT permit 15
    match source-protocol static
-   set community {{ my_asn }}:20000
+   set community MY-IGP-STATIC
 !
 route-map IPV6-IBGP-OUT permit 20
-   match community {{ my_asn }}:{{ my_asn }}
+   match community MY-PREFIXES
 !
 route-map IPV6-IBGP-OUT permit 25
-   match community {{ my_asn }}:30000
+   match community MY-UPSTREAM-ALL
 !
 route-map IPV6-IBGP-OUT permit 30
    match ip address prefix-list ipv6-default-route
